@@ -1,0 +1,5 @@
+.vscode/
+node_modules/
+thaielectshp2019_v2.geojson
+thaielectshp2019_v3.geojson
+package-lock.json
