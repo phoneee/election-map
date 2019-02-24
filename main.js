@@ -40,7 +40,7 @@ const positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z
 }).addTo(map);
 
 // overlay vector later
-const vectorTileUrl = 'election-map//build/vectortile/{z}/{x}-{y}.pbf';
+const vectorTileUrl = 'election-map/build/vectortile/{z}/{x}-{y}.pbf';
 const vectorTileOptions = {
   // rendererFactory: L.canvas.tile,
   rendererFactory: L.svg.tile,
