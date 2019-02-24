@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "prebuild": "rm -rf build; mkdir -p build/vectortile",
-    "build": "node -r esm scripts/build-geojson.js"
+    "build": "node --max-old-space-size=32000 -r esm scripts/build-geojson.js"
   },
   "dependencies": {
     "esm": "^3.2.6",

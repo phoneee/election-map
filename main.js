@@ -1,70 +1,85 @@
-// const geojsonvt = require('geojson-vt');
-// const fs = require("fs");
+const map = L.map('map');
 
-async function loadData() {
-    // var data = JSON.parse(fs.readFileSync("thaielectshp2019_v2.geojson")).feature;
-    // var tileIndex = geojsonvt(data);
-    const geoResult = await axios.get('/election-map/thaielectshp2019_v3.geojson');
-    const features = geoResult.data.features;
-
-    var mymap = L.map('mapid').setView([14.219733, 100.83973], 5);
-    L.tileLayer('https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets'
-    }).addTo(mymap);
-
-    L.geoJSON(features).addTo(mymap);
-
-    var popup = L.popup();
-
-    function onMapClick(e) {
-        popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(mymap);
-    }
-
-    mymap.on('click', onMapClick);
+function getFeatureId(feat) {
+    return `${feat.properties.province}
+    เขต${feat.properties.zone_num}`;
 }
 
-loadData();
+const HILIGHT_STYLE = {
+    weight: 2,
+    color: 'red',
+    opacity: 1,
+    fillColor: 'red',
+    fill: true,
+    radius: 6,
+    fillOpacity: 0.5
+};
 
-// var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-//
-// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-//     maxZoom: 18,
-//     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-//         '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-//         'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-//     id: 'mapbox.streets'
-// }).addTo(mymap);
-//
-// L.marker([51.5, -0.09]).addTo(mymap)
-//     .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-//
-// L.circle([51.508, -0.11], 500, {
-//     color: 'red',
-//     fillColor: '#f03',
-//     fillOpacity: 0.5
-// }).addTo(mymap).bindPopup("I am a circle.");
-//
-// L.polygon([
-//     [51.509, -0.08],
-//     [51.503, -0.06],
-//     [51.51, -0.047]
-// ]).addTo(mymap).bindPopup("I am a polygon.");
-//
-//
-// var popup = L.popup();
-//
-// function onMapClick(e) {
-//     popup
-//         .setLatLng(e.latlng)
-//         .setContent("You clicked the map at " + e.latlng.toString())
-//         .openOn(mymap);
-// }
-//
-// mymap.on('click', onMapClick);
+// Custom styling
+// @see http://leaflet.github.io/Leaflet.VectorGrid/vectorgrid-api-docs.html
+const vectorTileStyling = {
+    geojsonLayer: function (properties, zoom) {
+        const id = getFeatureId({
+            properties
+        });
+        return {
+            weight: 2,
+            fill: true,
+            fillColor: '#06cccc',
+            color: '#06cccc',
+            fillOpacity: 0.0,
+            opacity: 0.4,
+        };
+    }
+};
+
+// base tile layer
+const cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+const positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+    attribution: cartodbAttribution,
+    opacity: 1
+}).addTo(map);
+
+// overlay vector later
+const vectorTileUrl = '/build/vectortile/{z}/{x}-{y}.pbf';
+const vectorTileOptions = {
+    // rendererFactory: L.canvas.tile,
+    rendererFactory: L.svg.tile,
+    vectorTileLayerStyles: vectorTileStyling,
+    interactive: true,
+    maxZoom: 20,
+    getFeatureId: getFeatureId
+};
+
+const customPbfLayer = L.vectorGrid.protobuf(vectorTileUrl, vectorTileOptions).addTo(map);
+let highlight;
+const clearHighlight = function () {
+    if (highlight) {
+        customPbfLayer.resetFeatureStyle(highlight);
+    }
+    highlight = null;
+};
+customPbfLayer.on('click', function (e) { // The .on method attaches an event handler
+    L.popup()
+        .setContent(getFeatureId(e.layer))
+        .setLatLng(e.latlng)
+        .openOn(map);
+    clearHighlight();
+    highlight = getFeatureId(e.layer);
+    customPbfLayer.setFeatureStyle(highlight, HILIGHT_STYLE);
+
+    L.DomEvent.stop(e);
+});
+customPbfLayer.addTo(map);
+
+// config map
+map.setView({
+    lat: 13.040182144806664,
+    lng: 100.667968750000002
+}, 10);
+map.on('zoomend', function () {
+    console.log('map zoom: ' + map.getZoom());
+});
+map.on('click', function (e) {
+    console.log('map click:', e);
+});
