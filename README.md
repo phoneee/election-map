@@ -13,7 +13,7 @@ npm run build
 
 Example map loads vector tile as static files, no spatial server is needed.
 
-Launch a local web server from this directory. For example if we run `http-server` at port 8080, browse to `http://127.0.0.1:8080/thailand.html`.
+Launch a local web server from this directory. For example if we run `http-server` at port 8080, browse to `http://127.0.0.1:8080/index.html`.
 
 ```bash
 npm i -g http-server
