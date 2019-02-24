@@ -46,7 +46,8 @@ const vectorTileOptions = {
   rendererFactory: L.svg.tile,
   vectorTileLayerStyles: vectorTileStyling,
   interactive: true,
-  maxZoom: 20,
+  maxZoom: 18,
+  maxNativeZoom: 14,
   getFeatureId: getFeatureId
 };
 
