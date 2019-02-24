@@ -1,7 +1,7 @@
 const map = L.map('map');
 
 function getFeatureId(feat) {
-  return `${feat.properties.province}เขต${feat.properties.zone_num}`;
+  return `${feat.properties.province}<br>เขต ${feat.properties.zone_num}`;
 }
 
 const HILIGHT_STYLE = {
