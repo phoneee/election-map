@@ -1,7 +1,30 @@
 const map = L.map('map');
 
-function getFeatureId(feat) {
-  return `${feat.properties.province}<br>เขต ${feat.properties.zone_num}`;
+function getFeatureId(feature) {
+  return `${feature.properties.province}<br>เขต ${feature.properties.zone_num}`;
+}
+var showparty = {
+  'color': '#781f2e',
+  'weight': 2,
+  'opacity': 1
+};
+function highlightLayer(layerID) {
+  map._layers['name'+LayerID].setStyle(showparty);
+}
+
+
+
+function style(feature) {
+  return {
+    fillColor: function (p,z) {
+      getColor(feature.properties.province, feature.properties.zone_num)
+},
+    weight: 2,
+    opacity: 1,
+    color: 'white',
+    dashArray: '3',
+    fillOpacity: 0.7
+  };
 }
 
 const HILIGHT_STYLE = {
@@ -31,6 +54,14 @@ const vectorTileStyling = {
     };
   }
 };
+// event.currentTarget
+
+// add legend control layers - global variable with (null, null) allows indiv basemaps and overlays to be added inside functions below
+var controlLayers = L.control.layers( null, null, {
+  position: "topright",
+  collapsed: false // false = open by default
+}).addTo(map);
+
 
 // base tile layer
 const cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
@@ -59,6 +90,16 @@ const clearHighlight = function () {
   }
   highlight = null;
 };
+
+function HighlightParty(data, PartyName, e) {data.filter(function (el) {
+  return el.PartyName == PartyName ;
+}).forEach(
+    // TODO เอาไปจอยกับ e.layer ยังไง
+);
+}
+console.log(newArray);
+
+
 customPbfLayer.on('click', function (e) { // The .on method attaches an event handler
   L.popup()
     .setContent(getFeatureId(e.layer))
@@ -75,7 +116,7 @@ customPbfLayer.addTo(map);
 // config map
 map.setView({
   lat: 13.040182144806664,
-  lng: 100.667968750000002
+  lng: 100.677968750000002
 }, 10);
 map.on('zoomend', function () {
   console.log('map zoom: ' + map.getZoom());
