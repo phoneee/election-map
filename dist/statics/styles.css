@@ -1,252 +1,349 @@
-html,
-body {
-  font-family: 'Noto Sans Thai', sans-serif;
+html, body {
+    font-family: 'Noto Sans Thai', serif;
 }
 
 .dev-banner {
-  position: relative;
-  background: red;
-  color: white;
-  text-align: center;
+    position: relative;
+    background: red;
+    color: white;
+    text-align: center;
 }
 
-a,
-a:hover,
-a:visited {
-  color: black;
-  text-decoration: none;
+a, a:hover, a:visited {
+    color: black;
+    text-decoration: none;
 }
 
 .clear {
-  clear: both;
+    clear: both;
 }
 
-h1,
-h2,
-h3 {
-  font-family: 'Libre Baskerville', 'The Matter', serif;
+h1, h2, h3 {
+    font-family: 'Libre Baskerville', 'The Matter', serif;
 }
 
 h1.title {
-  text-align: center;
-  font-size: 44px;
-  font-weight: 700;
-  margin-bottom: 10px;
+    text-align: center;
+    font-size: 44px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
 .header-img {
-  display: block;
-  width: 20%;
-  margin: auto;
+    display: block;
+    width: 20%;
+    margin: auto;
 }
 
 .note {
-  text-align: center;
+    text-align: center;
 }
 
-body {
-  margin: 0;
-  background-color: #ffffff;
+.form {
+    text-align: center;
 }
 
-#app {
-  position: relative;
-  background-color: #e1e1e2;
+.form .postcode-label {
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
-#app.show-party {
-  background-color: #ffffff;
+.ui-guide {
+    color: #9B9B9B;
 }
 
-.navbar-brand {
-  display: block;
-  font-size: 1.25rem;
-  line-height: inherit;
-  margin-right: 1rem;
-  white-space: nowrap;
-  position: absolute;
-  z-index: 10;
-  top: 6px;
-  left: 16px;
+.ui-guide i {
+    margin-right: 5px;
 }
 
-.navbar-brand img {
-  width: 100%;
-  max-width: 150px;
+.form input {
+    padding: 5px;
+    font-size: 24px;
+    line-height: 23px;
+    border: 2px solid #F0324B;
+    width: 224px;
+    color: #000000;
+    font-family: "Libre Baskerville";
+    font-size: 24px;
+    letter-spacing: 0.05px;
+    line-height: 23px;
+    text-align: center;
 }
 
-.navbar-brand h6 {
-  color: #4a4a4a;
-  font-size: 0.75rem;
-  margin-top: 10px;
-  text-shadow: 0 1px rgba(255,255,255,.7);
+.results {
+    padding: 0px 10px;
+    text-align: center;
+    width: 80%;
+    margin: auto;
 }
 
-#map {
-  width: 100vw;
-  height: 100vh;
-  z-index: 1 ;
-  background: none;
+.result-label {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-#map .mapboxgl-popup {
-  font-family: 'Noto Sans Thai', sans-serif;
+ul {
+    list-style: none;
+    padding: 0px;
 }
 
-#map .mapboxgl-popup h4 {
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 1;
+.zone .header {
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 0.03px;
 }
 
-.ui {
-  pointer-events: initial;
+li.sub-area {
+    display: inline-block;
+    margin-right: 5px;
 }
 
-#ui-panel {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 40px;
-  padding: 100px 0 0;
-  /* background: rgba(255, 255, 255, 0.6); */
-  z-index: 10;
-  pointer-events: none;
-
-  max-width: 600px;
-  margin: 0 auto;
+.zone .area-name {
+    margin-right: 5px;
 }
 
-#ui-container {
-  text-align: center;
+.zone .area-name::before {
+    content: "●";
+    font-weight: bolder;
+    font-size: 11px;
+    vertical-align: middle;
+    margin-right: 5px;
 }
 
-.show-party #ui-container {
-  background: #ffffff;
-  padding: 15px 30px;
-  box-shadow: 0 2px 4px 0 #C3C3C3;
-  text-align: left;
-  border-radius: 12px;
+.zones .zone {
+    padding: 5px 20px;
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid #E1E1E2;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px 0 #C3C3C3;
 }
 
-.show-party #ui-panel {
-  width: 360px;
-  left: 55%;
-  left: calc(50% + 40px);
-
-  max-width: 400px;
-  margin: 0 auto 0 0;
+.zones a {
+    text-decoration: none;
+    color: black;
 }
 
-#ui-panel h2 {
-  font-size: 45px;
-  text-shadow: 0 1px rgba(255,255,255,.7);
+.zones a:visited {
+    color: black;
 }
 
-.show-party #ui-panel h2 {
-  font-size: 21px;
+.zone-page {
+    width: 80%;
+    margin: auto;
 }
 
-#ui-panel {
-  font-size: 18px;
+h1.zone-title {
+    font-size: 50px;
 }
 
-#party-select {
-  width: 80%;
-  max-width: 400px;
-  margin-top: 20px;
+.zone-information span.area:before {
+    content: "●";
+    margin-right: 5px;
 }
 
-.show-party #party-select {
-  width: 100%;
-  margin-top: 0;
+.candidate {
+    position: relative;
+    margin-top: 30px;
+    border-top: 2px solid #ddd;
 }
 
-#party-summary {
-  margin: 20px 0;
-  text-decoration: underline;
+.candidate .avatar {
+    float: left;
+    width: 30%x;
+    max-width: 214px;
+    margin-top: -2px;
+    border-top: 2px solid #ddd;
+    padding: 16px;
 }
 
-#party-howto {
-  display: block;
-  color: #9B9B9B;
-}
-.show-party.show-district #party-howto {
-  display: none;
+.candidate .details {
+    float: left;
+    margin-left: 0px;
 }
 
-#district-info {
-  display: none;
-}
-.show-party.show-district #district-info {
-  display: block;
+.candidate .additional-details {
+    color: #747474;
+    font-size: 16px;
 }
 
-#district-name {
-  font-size: 18px;
-  font-weight: bold;
-}
-#district-candidate {
-  margin-bottom: 20px;
+.candidate .additional-details ul {
+    margin-top: 10px;
+    list-style: disc;
+    padding: 0px 15px
 }
 
-#district-link {
-  display: block;
-  padding: 5px 20px;
-  width: 100%;
-  max-width: 450px;
-  font-size: 13px;
-  color: #747474;
-  border: 1px solid #E1E1E2;
-  text-align: center;
-  margin: auto;
-  margin-bottom: 10px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px 0 #C3C3C3;
+.candidate .additional-details ul span {
+    margin-left: -5px;
+}
+
+.candidate .details .name {
+    font-size: 20px;
+}
+
+.candidate .header h2 {
+    margin-top: 10px;
+}
+
+.candidate .details a {
+    margin-top: 10px;
+    color: #F0324B;
+    text-decoration: none;
+    font-weight: normal;
+    display: inline-block;
+}
+
+.candidate .details i {
+    margin-right:  4px;
+}
+
+.candidate .number {
+    color: white;
+    top: 0px;
+    background-color: #F0324B;
+    text-align: center;
+    padding-top: 5px;
+    position: absolute;
+    right: 0px;
+    font-weight: bold;
+    width: 97px;
+    height: 97px;
+}
+
+.candidate .number div {
+    font-family: 'The Matter', serif;
+    font-weight: 700;
+    text-align: center;
+    font-size: 60px;
+    margin-top: -10px;
+}
+
+.note {
+    margin: auto;
+    margin-top: 50px;
+    width: 80%;
+    color: #4A4A4A;
+    font-size: 12px;
+}
+
+.separator {
+    margin: 0px 10px;
+}
+
+.footer {
+    color: #4A4A4A;
+    font-size: 12px;
+    margin-top: 40px;
+    padding: 10px 0px;
+    font-family: 'Libre Baskerville', 'The Matter', serif;
+    text-align: center;
+}
+
+.footer a {
+    border-bottom: 1px solid black;
+}
+
+.zone-page ul.menu {
+    font-size: 20px;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    margin-top: 60px;
+}
+
+ul.menu li {
+    border: 2px solid #F0324B;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.back-button {
+    display: block;
+    text-align: right;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.back-button a, .back-button a:hover, .back-button a:visited {
+    color: #F0324B;
+>>>>>>> update web
 }
 
 
 .share-menu {
-  margin-top: 40px;
-  padding-top: 10px;
-  border-top: 1px solid #E1E1E2;
-  color: #F0324B;
-  font-family: sans-serif;
-  text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid #E1E1E2;
+    color: #F0324B;
+    font-family: sans-serif;
+    text-align: center;
 }
 
 .share-menu .label {
-  line-height: 35px;
-  margin-right: 10px;
-  font-weight: normal;
-  font-size: 13px;
+    line-height: 35px;
+    margin-right: 10px;
+    font-weight: bold;
 }
 
 .share-menu .share-button {
-  vertical-align: middle;
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  color: white;
-  background: #F0324B;
-  border-radius: 17.5px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    color: white;
+    background: #F0324B;
+    border-radius: 17.5px;
 }
 
 .share-menu .share-button i {
-  line-height: 35px;
+    line-height: 35px;
 }
 
-#ui-panel .footer {
-  font-family: 'Libre Baskerville', 'The Matter', sans-serif;
-  text-align: center;
-  font-size: 10px;
-  margin-top: 40px;
+
+/* ul.menu li.sharer {
+    float: right;
+    font-family: sans-serif;
+    background: #F0324B;
+    font-weight: normal;
+    display: inline-block;
+    line-height: 50px;
+    height: 50px;
+    border: 0px;
 }
 
-#ui-panel .footer a {
-  text-decoration: underline;
+ul.menu li.sharer, ul.menu li.sharer a {
+    color: white;
 }
+
+li.sharer .labelbox {
+    background: #DB253D;
+    line-height: 50px;
+    height: 50px;
+    display: inline-block;
+    padding: 0 20px;
+}
+
+li.sharer .labelbox i {
+    margin-right: 5px;
+}
+
+li.sharer .social a {
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+}
+
+li.sharer .social a:after {
+    content: "";
+    display: inline-block;
+    position: relative;
+    top: calc(50% - 9px);
+    right: -11px;
+    background: #fff;
+    width: 1px;
+    height: 18px;
+} */
