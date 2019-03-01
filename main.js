@@ -91,13 +91,13 @@ const clearHighlight = function () {
   highlight = null;
 };
 
-function HighlightParty(data, PartyName, e) {data.filter(function (el) {
-  return el.PartyName == PartyName ;
-}).forEach(
-    // TODO เอาไปจอยกับ e.layer ยังไง
-);
-}
-console.log(newArray);
+// function HighlightParty(data, PartyName, e) {data.filter(function (el) {
+//   return el.PartyName == PartyName ;
+// }).forEach(
+//     // TODO เอาไปจอยกับ e.layer ยังไง
+// );
+// }
+// console.log(newArray);
 
 
 customPbfLayer.on('click', function (e) { // The .on method attaches an event handler
