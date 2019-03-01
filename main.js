@@ -25,7 +25,6 @@ function style(feature) {
     dashArray: '3',
     fillOpacity: 0.7
   };
-
 }
 
 const HILIGHT_STYLE = {
@@ -58,7 +57,7 @@ const vectorTileStyling = {
 // event.currentTarget
 
 // add legend control layers - global variable with (null, null) allows indiv basemaps and overlays to be added inside functions below
-var controlLayers = L.control.layers( null, null, {
+let controlLayers = L.control.layers( null, null, {
   position: "topright",
   collapsed: false // false = open by default
 }).addTo(map);
@@ -72,7 +71,7 @@ const positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z
 }).addTo(map);
 
 // overlay vector later
-const vectorTileUrl = '/build/vectortile/{z}/{x}-{y}.pbf';
+const vectorTileUrl = 'build/vectortile/{z}/{x}-{y}.pbf';
 const vectorTileOptions = {
   // rendererFactory: L.canvas.tile,
   rendererFactory: L.svg.tile,
