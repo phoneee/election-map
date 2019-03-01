@@ -18,7 +18,7 @@ function style(feature) {
   return {
     fillColor: function (p,z) {
       getColor(feature.properties.province, feature.properties.zone_num)
-},
+    },
     weight: 2,
     opacity: 1,
     color: 'white',
@@ -57,7 +57,7 @@ const vectorTileStyling = {
 // event.currentTarget
 
 // add legend control layers - global variable with (null, null) allows indiv basemaps and overlays to be added inside functions below
-var controlLayers = L.control.layers( null, null, {
+let controlLayers = L.control.layers( null, null, {
   position: "topright",
   collapsed: false // false = open by default
 }).addTo(map);
@@ -91,13 +91,13 @@ const clearHighlight = function () {
   highlight = null;
 };
 
-function HighlightParty(data, PartyName, e) {data.filter(function (el) {
-  return el.PartyName == PartyName ;
-}).forEach(
-    // TODO เอาไปจอยกับ e.layer ยังไง
-);
-}
-console.log(newArray);
+// function HighlightParty(data, PartyName, e) {data.filter(function (el) {
+//   return el.PartyName == PartyName ;
+// }).forEach(
+//     // TODO เอาไปจอยกับ e.layer ยังไง
+// );
+// }
+// console.log(newArray);
 
 
 customPbfLayer.on('click', function (e) { // The .on method attaches an event handler
