@@ -1,21 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Thailand Election map</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <title>Thailand Election map</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
 </head>
 <body style='margin: 0;'>
-  <div id="map" style="width: 100vw; height: 100vh; background: white"></div>
 
-  <script type="text/javascript"  src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-  <script
-          src="https://code.jquery.com/jquery-3.1.1.min.js"
-          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-          crossorigin="anonymous"></script>
-  <script type="text/javascript"  src="https://unpkg.com/leaflet.vectorgrid@1.3.0"></script>
-  <!-- <script type="text/javascript" src="../dist/Leaflet.VectorGrid.bundled.js"></script> -->
-  <script type="text/javascript" src="main.js"></script>
+<div id="container" style="position: relative">
+    <div id="map" style="width: 100vw; height: 100vh; z-index: 1"></div>
+    <div id="infof" style="position: absolute; width: 50%; height: 100vh; left:50%; top: 0; right:100%; background: rgba(255, 255, 255, 0.6); z-index: 10">
+        <div></div>
+        <select class="select2-main" id="select-party" name="a">
+            <option disabled selected>เลือกพรรค</option>
+            <option class="op" value="ชาติไทยพัฒนา">
+                ชาติไทยพัฒนา
+            </option>
+
+            <option class="op" value="ชาติพัฒนา">
+                ชาติพัฒนา
+            </option>
+
+            <option class="op" value="ไทษรักษาชาติ">
+                ไทษรักษาชาติ
+            </option>
+
+            <option class="op" value="ประชาธิปัตย์">
+                ประชาธิปัตย์
+            </option>
+
+            <option class="op" value="พลังชล">
+                พลังชล
+            </option>
+
+            <option class="op" value="พลังประชารัฐ">
+                พลังประชารัฐ
+            </option>
+
+            <option class="op" value="เพื่อไทย">
+                เพื่อไทย
+            </option>
+
+            <option class="op" value="ภูมิใจไทย">
+                ภูมิใจไทย
+            </option>
+
+            <option class="op" value="รวมพลังประชาชาติไทย">
+                รวมพลังประชาชาติไทย
+            </option>
+
+            <option class="op" value="สามัญชน">
+                สามัญชน
+            </option>
+
+            <option class="op" value="เสรีรวมไทย">
+                เสรีรวมไทย
+            </option>
+
+            <option class="op" value="อนาคตใหม่">
+                อนาคตใหม่
+            </option>
+        </select>
+    </div>
+    <div id="info">&nbsp;</div>
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/leaflet.vectorgrid@1.3.0"></script>
+<!-- <script type="text/javascript" src="../dist/Leaflet.VectorGrid.bundled.js"></script> -->
+<script type="text/javascript" src="main.js"></script>
 </body>
 </html>

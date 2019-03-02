@@ -1,22 +1,27 @@
+var bounds = [
+  [20.464607239, 97.343635559], // Southwest coordinates
+  [-73.91058699000139, 105.636978149]  // Northeast coordinates
+];
 const map = L.map('map');
 
 function getFeatureId(feature) {
   return `${feature.properties.province}<br>เขต ${feature.properties.zone_num}`;
 }
+
 var showparty = {
   'color': '#781f2e',
   'weight': 2,
   'opacity': 1
 };
-function highlightLayer(layerID) {
-  map._layers['name'+LayerID].setStyle(showparty);
-}
 
+function highlightLayer(layerID) {
+  map._layers['name' + LayerID].setStyle(showparty);
+}
 
 
 function style(feature) {
   return {
-    fillColor: function (p,z) {
+    fillColor: function (p, z) {
       getColor(feature.properties.province, feature.properties.zone_num)
     },
     weight: 2,
@@ -29,9 +34,9 @@ function style(feature) {
 
 const HILIGHT_STYLE = {
   weight: 2,
-  color: 'red',
+  color: 'blue',
   opacity: 1,
-  fillColor: 'red',
+  fillColor: 'blue',
   fill: true,
   radius: 6,
   fillOpacity: 0.5
@@ -57,17 +62,17 @@ const vectorTileStyling = {
 // event.currentTarget
 
 // add legend control layers - global variable with (null, null) allows indiv basemaps and overlays to be added inside functions below
-let controlLayers = L.control.layers( null, null, {
-  position: "topright",
-  collapsed: false // false = open by default
-}).addTo(map);
+// let controlLayers = L.control.layers( null, null, {
+//   position: "topright",
+//   collapsed: false // false = open by default
+// }).addTo(map);
 
 
 // base tile layer
 const cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
 const positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
   attribution: cartodbAttribution,
-  opacity: 1
+  opacity: 1,
 }).addTo(map);
 
 // overlay vector later
@@ -100,6 +105,37 @@ const clearHighlight = function () {
 // console.log(newArray);
 
 
+async function fetchAsync(url) {
+  // const location = window.location.hostname;
+  const data = await fetch(url)
+    .then(response => response.json())
+    .then(json => {
+      return json;
+    })
+    .catch(e => {
+      return e
+    });
+
+  return data;
+}
+
+var select = document.getElementById("select-party");
+select.onchange = function () {
+  var selectedString = select.value;
+  // alert(selectedString);
+  clearHighlight();
+  fetchAsync(`./data/parties/${selectedString}.json`)
+    .then(data => {
+      let match = customPbfLayer.eachLayer( function (layer) {
+        if (layer.feature.properties.province == data.province_name &&
+            layer.feature.properties.zone_num == data.zone_number) {
+          highlight = getFeatureId(layer);
+          customPbfLayer.setFeatureStyle(highlight, HILIGHT_STYLE);
+        }
+      })
+    });
+};
+
 customPbfLayer.on('click', function (e) { // The .on method attaches an event handler
   L.popup()
     .setContent(getFeatureId(e.layer))
@@ -108,16 +144,23 @@ customPbfLayer.on('click', function (e) { // The .on method attaches an event ha
   clearHighlight();
   highlight = getFeatureId(e.layer);
   customPbfLayer.setFeatureStyle(highlight, HILIGHT_STYLE);
-
+  var info = document.getElementById('info');
+  if (e.layer) {
+    info.innerHTML = "heyyy";
+  } else {
+    info.innerHTML = '&nbsp;';
+  }
   L.DomEvent.stop(e);
 });
 customPbfLayer.addTo(map);
 
 // config map
+map.options.minZoom = 6;
+map.fitBounds(bounds)
 map.setView({
-  lat: 13.040182144806664,
+  lat: 13.640182144806664,
   lng: 100.677968750000002
-}, 10);
+}, 6);
 map.on('zoomend', function () {
   console.log('map zoom: ' + map.getZoom());
 });
