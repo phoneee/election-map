@@ -1,8 +1,19 @@
 const bounds = [
-  [20.464607239, 97.343635559], // Southwest coordinates
-  [-73.91058699000139, 105.636978149]  // Northeast coordinates
+  [20.464607, 97.343635], // Southwest coordinates
+  [-73.910586, 105.636978]  // Northeast coordinates
 ];
-const map = L.map('map');
+const mapFullPageCenter = {
+  lat: 13.640182,
+  lng: 100.677968
+};
+const mapHalfPageCenter = {
+  lat: 13.640182,
+  lng: 107.820468
+};
+const map = L.map('map', {
+  zoomDelta: 1,
+  zoomSnap: 0
+});
 
 /**
  * Load JSON data from URL
@@ -32,7 +43,7 @@ function getFeatureId(feature) {
 /**
  * Clear styles from all features
  */
-const clearHighlight = function () {
+const clearStyle = function () {
   // clear highlight from all features
   Object.keys(featureList).forEach(featureId => {
     customPbfLayer.resetFeatureStyle(featureId);
@@ -42,19 +53,54 @@ const clearHighlight = function () {
 /**
  * Highlight districts by party name
  * @param {String} partyName
+ * @return {Array<String>} List of feature ID belongs to the party
  */
 async function highlightByParty(partyName) {
   const data = await fetchAsync(`./data/parties/${partyName}.json`);
-  data.forEach(district => {
+  const featureList = data.map(district => {
     // highlight by feature ID
     const featureId = `${district.province_name}-${district.zone_number}`;
-    customPbfLayer.setFeatureStyle(featureId, HILIGHT_STYLE);
+    customPbfLayer.setFeatureStyle(featureId, PARTY_STYLE);
+    return featureId;
   });
+  return featureList;
+}
+
+function zoomFullPage() {
+  map.setView(mapFullPageCenter, 6);
+}
+
+function zoomHalfPage() {
+  map.flyTo(mapHalfPageCenter, 6);
+}
+
+function selectDistrict(feature) {
+  if (!feature) {
+    document.getElementById('party-howto').innerHTML = 'เลือกเขตเพื่อดูข้อมูลผู้สมัคร';
+    return;
+  };
+
+  highlight = feature;
+  const highlightId = getFeatureId(feature);
+  customPbfLayer.setFeatureStyle(highlightId, HILIGHT_STYLE);
+
+  document.getElementById('app').classList.add('show-district');
+  document.getElementById('district-name').innerHTML = `${feature.properties.province} เขตเลือกตั้งที่${feature.properties.zone_num}`;
+  document.getElementById('district-link').href = `https://elect.in.th/candidates/z/${feature.properties.province}-${feature.properties.zone_num}.html`;
+  if (partyFeatureList.includes(highlightId)) {
+    document.getElementById('district-candidate').innerHTML = `คุณ xxx yyy ${Math.random() * 1000 | 0}`;
+  } else {
+    document.getElementById('district-candidate').innerHTML = 'ไม่มีผู้สมัครลงในเขตเลือกตั้งนี้';
+  }
 }
 
 // Keep tracks of all features on vector tile
 const featureList = {};
+// List of district feature ID of currently selected party
+let partyFeatureList = [];
 
+// Currently selected party name
+let selectedPartyName;
 // Currently selected district feature ID
 let highlight;
 
@@ -82,14 +128,41 @@ function style(feature) {
   };
 }
 
-const HILIGHT_STYLE = {
-  weight: 2,
+const DEFAULT_STYLE = {
+  weight: 1,
+  fill: true,
+  fillOpacity: 0.0,
+  color: '#999999',
+  // color: '#ffffff',
+  opacity: 0.4,
+};
+
+const ACTIVE_DEFAULT_STYLE = {
+  weight: 1,
+  fill: false,
+  fillOpacity: 0.0,
+  color: '#ffffff',
+  opacity: 0.9,
+};
+
+const PARTY_STYLE = {
+  weight: 0.5,
   color: 'blue',
   opacity: 1,
-  fillColor: 'blue',
   fill: true,
-  radius: 6,
-  fillOpacity: 0.5
+  fillColor: 'blue',
+  fillOpacity: 0.5,
+  radius: 6
+};
+
+const HILIGHT_STYLE = {
+  weight: 1,
+  color: '#F0324B',
+  opacity: 1,
+  fill: true,
+  fillColor: '#F0324B',
+  fillOpacity: 0.5,
+  radius: 6
 };
 
 // Custom styling
@@ -101,14 +174,7 @@ const vectorTileStyling = {
     });
     // add this feature to tracking list
     featureList[id] = true;
-    return {
-      weight: 2,
-      fill: true,
-      fillColor: '#06cccc',
-      color: '#06cccc',
-      fillOpacity: 0.0,
-      opacity: 0.4,
-    };
+    return DEFAULT_STYLE;
   }
 };
 // event.currentTarget
@@ -120,12 +186,12 @@ const vectorTileStyling = {
 // }).addTo(map);
 
 
-// base tile layer
-const cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
-const positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-  attribution: cartodbAttribution,
-  opacity: 1,
-}).addTo(map);
+// // base tile layer
+// const cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+// const positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+//   attribution: cartodbAttribution,
+//   opacity: 1,
+// }).addTo(map);
 
 // overlay vector later
 const vectorTileUrl = 'build/vectortile/{z}/{x}-{y}.pbf';
@@ -141,20 +207,14 @@ const vectorTileOptions = {
 
 const customPbfLayer = L.vectorGrid.protobuf(vectorTileUrl, vectorTileOptions).addTo(map);
 
-customPbfLayer.on('click', function (e) { // The .on method attaches an event handler
-  L.popup()
-    .setContent(getFeatureId(e.layer))
-    .setLatLng(e.latlng)
-    .openOn(map);
-  clearHighlight();
-  highlight = getFeatureId(e.layer);
-  customPbfLayer.setFeatureStyle(highlight, HILIGHT_STYLE);
-  var info = document.getElementById('info');
-  if (e.layer) {
-    info.innerHTML = "heyyy";
-  } else {
-    info.innerHTML = '&nbsp;';
+customPbfLayer.on('click', async function (e) {
+  clearStyle();
+  if (selectedPartyName) {
+    await highlightByParty(selectedPartyName);
   }
+
+  selectDistrict(e.layer);
+
   L.DomEvent.stop(e);
 });
 customPbfLayer.addTo(map);
@@ -162,10 +222,7 @@ customPbfLayer.addTo(map);
 // config map
 map.options.minZoom = 6;
 map.fitBounds(bounds)
-map.setView({
-  lat: 13.640182144806664,
-  lng: 100.677968750000002
-}, 6);
+map.setView(mapFullPageCenter, 6);
 map.on('zoomend', function () {
   console.log('map zoom: ' + map.getZoom());
 });
@@ -174,9 +231,70 @@ map.on('click', function (e) {
 });
 
 // UI interactions
-const select = document.getElementById("select-party");
+const select = document.getElementById("party-select");
 select.onchange = async function () {
-  const partyName = select.value;
-  clearHighlight();
-  await highlightByParty(partyName);
+  // First time user select a party
+  if (!selectedPartyName) {
+    document.getElementById('app').classList.add('show-party');
+    // zoomFullPage();
+    const currentZoom = map.getZoom();
+    if (currentZoom < 8) {
+      zoomHalfPage();
+    }
+  }
+
+  selectedPartyName = select.value;
+  clearStyle();
+  partyFeatureList = await highlightByParty(selectedPartyName);
+  document.getElementById('party-summary').innerHTML = `รวม ${partyFeatureList.length} เขต`;
+
+  selectDistrict(highlight);
 };
+
+
+function setupShare() {
+  function createPopup(url, width, height) {
+    var newwindow = window.open(url, "", "width=" + width + ",height=" + height + ",scrollbars=true");
+    if (window.focus) {
+        newwindow.focus()
+    }
+    return false;
+  }
+
+  let share_buttons;
+  share_buttons = document.getElementsByClassName("share-facebook");
+  for (let i = 0; i < share_buttons.length; i++) {
+      let button = share_buttons[i];
+      button.onclick = function () {
+          let share_url = document.URL;
+
+          FB.ui({
+              method: 'feed',
+              display: 'popup',
+              link: share_url,
+          }, function (response) {});
+      }
+  }
+
+  share_buttons = document.getElementsByClassName("share-twitter");
+  for (let i = 0; i < share_buttons.length; i++) {
+      let button = share_buttons[i];
+      button.onclick = function () {
+          var share_url = document.URL;
+          var text = document.querySelector("meta[property='og:title']").getAttribute("content");
+          var retext = encodeURIComponent(text);
+          createPopup("https://twitter.com/share?text=" + retext + "&url=" + share_url, 550, 420);
+      }
+  }
+
+  share_buttons = document.getElementsByClassName("share-line");
+  for (let i = 0; i < share_buttons.length; i++) {
+      let button = share_buttons[i];
+      button.onclick = function () {
+          var share_url = document.URL;
+          createPopup("https://social-plugins.line.me/lineit/share?url=" + share_url, 550, 600);
+      }
+  }
+}
+
+setupShare();
