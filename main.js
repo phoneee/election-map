@@ -44,23 +44,29 @@ function getFeatureId(feature) {
  * Clear styles from all features
  */
 const clearStyle = function () {
-  // clear highlight from all features
+  // clear hilight from all features
   Object.keys(featureList).forEach(featureId => {
     customPbfLayer.resetFeatureStyle(featureId);
   });
 };
 
 /**
- * Highlight districts by party name
+ * Hilight districts by party name
  * @param {String} partyName
  * @return {Array<String>} List of feature ID belongs to the party
  */
-async function highlightByParty(partyName) {
+async function hilightByParty(partyName) {
   const data = await fetchAsync(`./data/parties/${partyName}.json`);
+  let partyInfo = partyList.filter(p => p.name === partyName);
+  if (partyInfo) partyInfo = partyInfo[0];
   const featureList = data.map(district => {
-    // highlight by feature ID
+    // hilight by feature ID
     const featureId = `${district.province_name}-${district.zone_number}`;
-    customPbfLayer.setFeatureStyle(featureId, PARTY_STYLE);
+    customPbfLayer.setFeatureStyle(featureId, {
+      ...PARTY_STYLE,
+      color: partyInfo.color || PARTY_STYLE.color,
+      fillColor: partyInfo.color || PARTY_STYLE.fillColor
+    });
     return featureId;
   });
   return featureList;
@@ -80,19 +86,29 @@ function selectDistrict(feature) {
     return;
   };
 
-  highlight = feature;
-  const highlightId = getFeatureId(feature);
-  customPbfLayer.setFeatureStyle(highlightId, HILIGHT_STYLE);
+  let partyInfo = partyList.filter(p => p.name === selectedPartyName);
+  if (partyInfo) partyInfo = partyInfo[0];
+
+  hilight = feature;
+  const hilightId = getFeatureId(feature);
+  customPbfLayer.setFeatureStyle(hilightId, {
+    ...HILIGHT_STYLE,
+    color: partyInfo.hilightColor || HILIGHT_STYLE.color,
+    fillColor: partyInfo.hilightColor || HILIGHT_STYLE.fillColor
+  });
 
   document.getElementById('app').classList.add('show-district');
   document.getElementById('district-name').innerHTML = `${feature.properties.province} เขตเลือกตั้งที่${feature.properties.zone_num}`;
   document.getElementById('district-link').href = `https://elect.in.th/candidates/z/${feature.properties.province}-${feature.properties.zone_num}.html`;
-  if (partyFeatureList.includes(highlightId)) {
+  if (partyFeatureList.includes(hilightId)) {
     document.getElementById('district-candidate').innerHTML = `คุณ xxx yyy ${Math.random() * 1000 | 0}`;
   } else {
     document.getElementById('district-candidate').innerHTML = 'ไม่มีผู้สมัครลงในเขตเลือกตั้งนี้';
   }
 }
+
+// List of all parties and its color
+let partyList = [];
 
 // Keep tracks of all features on vector tile
 const featureList = {};
@@ -102,7 +118,7 @@ let partyFeatureList = [];
 // Currently selected party name
 let selectedPartyName;
 // Currently selected district feature ID
-let highlight;
+let hilight;
 
 const showparty = {
   'color': '#781f2e',
@@ -110,7 +126,7 @@ const showparty = {
   'opacity': 1
 };
 
-function highlightLayer(layerID) {
+function hilightLayer(layerID) {
   map._layers['name' + LayerID].setStyle(showparty);
 }
 
@@ -210,7 +226,7 @@ const customPbfLayer = L.vectorGrid.protobuf(vectorTileUrl, vectorTileOptions).a
 customPbfLayer.on('click', async function (e) {
   clearStyle();
   if (selectedPartyName) {
-    await highlightByParty(selectedPartyName);
+    await hilightByParty(selectedPartyName);
   }
 
   selectDistrict(e.layer);
@@ -245,10 +261,10 @@ select.onchange = async function () {
 
   selectedPartyName = select.value;
   clearStyle();
-  partyFeatureList = await highlightByParty(selectedPartyName);
+  partyFeatureList = await hilightByParty(selectedPartyName);
   document.getElementById('party-summary').innerHTML = `รวม ${partyFeatureList.length} เขต`;
 
-  selectDistrict(highlight);
+  selectDistrict(hilight);
 };
 
 
@@ -297,4 +313,19 @@ function setupShare() {
   }
 }
 
+async function setupParty() {
+  const select = document.getElementById('party-select');
+  let options = [
+    '<option disabled selected>เลือกเพรรค</option>'
+  ];
+  const partyResult = await fetchAsync(`./data/party.json`);
+  partyList = partyResult.data || [];
+  partyList.forEach(p => {
+    options.push(`<option class="op" value="${p.name}">${p.name}</option>`);
+  });
+  select.innerHTML = options.join('\n');
+}
+
 setupShare();
+
+setupParty();
