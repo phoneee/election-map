@@ -1,14 +1,64 @@
-var bounds = [
+const bounds = [
   [20.464607239, 97.343635559], // Southwest coordinates
   [-73.91058699000139, 105.636978149]  // Northeast coordinates
 ];
 const map = L.map('map');
 
-function getFeatureId(feature) {
-  return `${feature.properties.province}<br>เขต ${feature.properties.zone_num}`;
+/**
+ * Load JSON data from URL
+ * @param {String} url
+ * @return {Object} requested data
+ */
+function fetchAsync(url) {
+  return fetch(url)
+    .then(response => response.json())
+    .then(json => {
+      return json;
+    })
+    .catch(e => {
+      return e
+    });
 }
 
-var showparty = {
+/**
+ * Crate a unique ID for each election district (province + zone)
+ * @param {Object} feature GeoJSON feature object
+ * @return {String} Unique feature ID
+ */
+function getFeatureId(feature) {
+  return `${feature.properties.province}-${feature.properties.zone_num}`;
+}
+
+/**
+ * Clear styles from all features
+ */
+const clearHighlight = function () {
+  // clear highlight from all features
+  Object.keys(featureList).forEach(featureId => {
+    customPbfLayer.resetFeatureStyle(featureId);
+  });
+};
+
+/**
+ * Highlight districts by party name
+ * @param {String} partyName
+ */
+async function highlightByParty(partyName) {
+  const data = await fetchAsync(`./data/parties/${partyName}.json`);
+  data.forEach(district => {
+    // highlight by feature ID
+    const featureId = `${district.province_name}-${district.zone_number}`;
+    customPbfLayer.setFeatureStyle(featureId, HILIGHT_STYLE);
+  });
+}
+
+// Keep tracks of all features on vector tile
+const featureList = {};
+
+// Currently selected district feature ID
+let highlight;
+
+const showparty = {
   'color': '#781f2e',
   'weight': 2,
   'opacity': 1
@@ -49,6 +99,8 @@ const vectorTileStyling = {
     const id = getFeatureId({
       properties
     });
+    // add this feature to tracking list
+    featureList[id] = true;
     return {
       weight: 2,
       fill: true,
@@ -88,53 +140,6 @@ const vectorTileOptions = {
 };
 
 const customPbfLayer = L.vectorGrid.protobuf(vectorTileUrl, vectorTileOptions).addTo(map);
-let highlight;
-const clearHighlight = function () {
-  if (highlight) {
-    customPbfLayer.resetFeatureStyle(highlight);
-  }
-  highlight = null;
-};
-
-// function HighlightParty(data, PartyName, e) {data.filter(function (el) {
-//   return el.PartyName == PartyName ;
-// }).forEach(
-//     // TODO เอาไปจอยกับ e.layer ยังไง
-// );
-// }
-// console.log(newArray);
-
-
-async function fetchAsync(url) {
-  // const location = window.location.hostname;
-  const data = await fetch(url)
-    .then(response => response.json())
-    .then(json => {
-      return json;
-    })
-    .catch(e => {
-      return e
-    });
-
-  return data;
-}
-
-var select = document.getElementById("select-party");
-select.onchange = function () {
-  var selectedString = select.value;
-  // alert(selectedString);
-  clearHighlight();
-  fetchAsync(`./data/parties/${selectedString}.json`)
-    .then(data => {
-      let match = customPbfLayer.eachLayer( function (layer) {
-        if (layer.feature.properties.province == data.province_name &&
-            layer.feature.properties.zone_num == data.zone_number) {
-          highlight = getFeatureId(layer);
-          customPbfLayer.setFeatureStyle(highlight, HILIGHT_STYLE);
-        }
-      })
-    });
-};
 
 customPbfLayer.on('click', function (e) { // The .on method attaches an event handler
   L.popup()
@@ -167,3 +172,11 @@ map.on('zoomend', function () {
 map.on('click', function (e) {
   console.log('map click:', e);
 });
+
+// UI interactions
+const select = document.getElementById("select-party");
+select.onchange = async function () {
+  const partyName = select.value;
+  clearHighlight();
+  await highlightByParty(partyName);
+};
