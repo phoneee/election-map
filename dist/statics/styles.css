@@ -137,6 +137,7 @@ body {
 
 #party-howto {
   display: block;
+  color: #9B9B9B;
 }
 .show-party.show-district #party-howto {
   display: none;

@@ -8,12 +8,17 @@ const mapFullPageCenter = {
 };
 const mapHalfPageCenter = {
   lat: 13.640182,
-  lng: 107.820468
+  lng: 105.220468
 };
 const map = L.map('map', {
   zoomDelta: 1,
   zoomSnap: 0
 });
+
+function isMobile() {
+  const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+  return width < 764;
+}
 
 /**
  * Load JSON data from URL
@@ -252,10 +257,14 @@ select.onchange = async function () {
   // First time user select a party
   if (!selectedPartyName) {
     document.getElementById('app').classList.add('show-party');
-    // zoomFullPage();
-    const currentZoom = map.getZoom();
-    if (currentZoom < 8) {
-      zoomHalfPage();
+
+    if (isMobile()) {
+      zoomFullPage();
+    } else {
+      const currentZoom = map.getZoom();
+      if (currentZoom < 8) {
+        zoomHalfPage();
+      }
     }
   }
 
