@@ -1,6 +1,10 @@
-const bounds = [
-  [20.464607, 97.343635], // Southwest coordinates
-  [-73.910586, 105.636978]  // Northeast coordinates
+const defaultBounds = [
+  [94.306641, 4.828260], // Southwest
+  [108.457031, 21.616579] // Northeast
+];
+const maxBounds = [
+  [90.087891, 2.021065], // Southwest
+  [112.236328, 23.966176] // Northeast
 ];
 const mapFullPageCenter = {
   lat: 13.640182,
@@ -10,14 +14,43 @@ const mapHalfPageCenter = {
   lat: 13.640182,
   lng: 105.220468
 };
-const map = L.map('map', {
-  zoomDelta: 1,
-  zoomSnap: 0
-});
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibGJ1ZCIsImEiOiJCVTZFMlRRIn0.0ZQ4d9-WZrekVy7ML89P4A';
+
+// Map object
+let map;
 
 function isMobile() {
   const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
   return width < 764;
+}
+
+// Lighten
+// const NewColor = LightenDarkenColor("#F06D06", 20);
+// Darken
+// const NewColor = LightenDarkenColor("#F06D06", -20);
+function lightenDarkenColor(col, amt) {
+  let usePound = false;
+  if (col[0] == "#") {
+      col = col.slice(1);
+      usePound = true;
+  }
+
+  const num = parseInt(col,16);
+
+  let r = (num >> 16) + amt;
+  if (r > 255) r = 255;
+  else if  (r < 0) r = 0;
+
+  let b = ((num >> 8) & 0x00FF) + amt;
+  if (b > 255) b = 255;
+  else if  (b < 0) b = 0;
+
+  let g = (num & 0x0000FF) + amt;
+  if (g > 255) g = 255;
+  else if (g < 0) g = 0;
+
+  return (usePound ? '#': '') + (g | (b << 8) | (r << 16)).toString(16).padStart(6, '0');
 }
 
 /**
@@ -46,67 +79,79 @@ function getFeatureId(feature) {
 }
 
 /**
- * Clear styles from all features
- */
-const clearStyle = function () {
-  // clear hilight from all features
-  Object.keys(featureList).forEach(featureId => {
-    customPbfLayer.resetFeatureStyle(featureId);
-  });
-};
-
-/**
  * Hilight districts by party name
  * @param {String} partyName
  * @return {Array<String>} List of feature ID belongs to the party
  */
 async function hilightByParty(partyName) {
-  const data = await fetchAsync(`./data/parties/${partyName}.json`);
+  const candidates = await fetchAsync(`./data/parties/${partyName}.json`);
   let partyInfo = partyList.filter(p => p.name === partyName);
   if (partyInfo) partyInfo = partyInfo[0];
-  const featureList = data.map(district => {
-    // hilight by feature ID
-    const featureId = `${district.province_name}-${district.zone_number}`;
-    customPbfLayer.setFeatureStyle(featureId, {
-      ...PARTY_STYLE,
-      color: partyInfo.color || PARTY_STYLE.color,
-      fillColor: partyInfo.color || PARTY_STYLE.fillColor
-    });
-    return featureId;
-  });
-  return featureList;
+  // const featureList = candidates.map(candidate => {
+  //   // hilight by feature ID
+  //   const featureId = `${candidate.province_name}-${candidate.zone_number}`;
+  //   // customPbfLayer.setFeatureStyle(featureId, {
+  //   //   ...PARTY_STYLE,
+  //   //   color: partyInfo.color || PARTY_STYLE.color,
+  //   //   fillColor: partyInfo.color || PARTY_STYLE.fillColor
+  //   // });
+  //   return featureId;
+  // });
+  // const featureList = candidates.map(d => d.fid);
+
+  if (candidates && candidates.length > 0) {
+    map.setPaintProperty('election-district-party', 'fill-color', partyInfo.color);
+    map.setPaintProperty('election-district-party', 'fill-outline-color', lightenDarkenColor(partyInfo.color, -20));
+    // map.setPaintProperty('election-district', 'line-color', lightenDarkenColor(partyInfo.color, -20));
+    map.setFilter('election-district-party', [
+      'any',
+      ...candidates.map(c => ([
+        'all',
+        ['==', 'province', c.province_name],
+        ['==', 'zone_num', c.zone_number],
+      ]))
+    ]);
+  }
+
+  return candidates;
 }
 
 function zoomFullPage() {
-  map.setView(mapFullPageCenter, 6);
+  map.fitBounds(defaultBounds);
 }
 
 function zoomHalfPage() {
-  map.flyTo(mapHalfPageCenter, 6);
+  map.flyTo({
+    center: mapHalfPageCenter,
+    zoom: 4.8
+  });
 }
 
 function selectDistrict(feature) {
   if (!feature) {
     document.getElementById('party-howto').innerHTML = 'เลือกเขตเพื่อดูข้อมูลผู้สมัคร';
+    document.getElementById('app').classList.remove('show-district');
     return;
-  };
+  }
+  ;
 
   let partyInfo = partyList.filter(p => p.name === selectedPartyName);
   if (partyInfo) partyInfo = partyInfo[0];
 
   hilight = feature;
   const hilightId = getFeatureId(feature);
-  customPbfLayer.setFeatureStyle(hilightId, {
-    ...HILIGHT_STYLE,
-    color: partyInfo.hilightColor || HILIGHT_STYLE.color,
-    fillColor: partyInfo.hilightColor || HILIGHT_STYLE.fillColor
-  });
+
+  // map.setPaintProperty('election-district-hilight', 'fill-color', partyInfo && partyInfo.hilightColor || HILIGHT_STYLE.fillColor);
+  map.setPaintProperty('election-district-hilight', 'fill-color', HILIGHT_STYLE.fillColor);
+  map.setFilter('election-district-hilight', ['==', 'fid', feature.properties.fid]);
 
   document.getElementById('app').classList.add('show-district');
   document.getElementById('district-name').innerHTML = `${feature.properties.province} เขตเลือกตั้งที่${feature.properties.zone_num}`;
   document.getElementById('district-link').href = `https://elect.in.th/candidates/z/${feature.properties.province}-${feature.properties.zone_num}.html`;
-  if (partyFeatureList.includes(hilightId)) {
-    document.getElementById('district-candidate').innerHTML = `คุณ xxx yyy ${Math.random() * 1000 | 0}`;
+
+  const selectedCandidate = partyFeatureList.filter(f => `${f.province_name}-${f.zone_number}` === hilightId)[0];
+  if (selectedCandidate) {
+    document.getElementById('district-candidate').innerHTML = `${selectedCandidate.Title} ${selectedCandidate.FirstName} ${selectedCandidate.LastName}`;
   } else {
     document.getElementById('district-candidate').innerHTML = 'ไม่มีผู้สมัครลงในเขตเลือกตั้งนี้';
   }
@@ -198,90 +243,160 @@ const vectorTileStyling = {
     return DEFAULT_STYLE;
   }
 };
-// event.currentTarget
 
-// add legend control layers - global variable with (null, null) allows indiv basemaps and overlays to be added inside functions below
-// let controlLayers = L.control.layers( null, null, {
-//   position: "topright",
-//   collapsed: false // false = open by default
-// }).addTo(map);
+function createMap() {
+  map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v9',
+    center: mapFullPageCenter,
+    maxZoom: 16,
+    // maxBounds: maxBounds
+  });
 
+  map.on('load', function() {
+    // source data
+    map.addSource('thaielection2562', {
+      type: 'vector',
+      tiles: [
+        `${location.origin}/build/vt/thaielection2562/{z}/{x}/{y}.pbf`,
+      ],
+      maxzoom: 14
+    });
+    // interactive layer
+    map.addLayer({
+      id: 'election-district-ui',
+      type: 'fill',
+      'source': 'thaielection2562',
+      'source-layer': 'thaielection2562',
+      paint: {
+        'fill-opacity': 0
+        // visibility: 'visible'
+      }
+    });
+    // boundary
+    map.addLayer({
+      id: 'election-district',
+      type: 'line',
+      'source': 'thaielection2562',
+      'source-layer': 'thaielection2562',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-width': 1,
+        'line-color': '#ff69b4',
+        'line-width': 1
+      }
+    });
+    // party
+    map.addLayer({
+      id: 'election-district-party',
+      type: 'fill',
+      'source': 'thaielection2562',
+      'source-layer': 'thaielection2562',
+      paint: {
+        'fill-outline-color': '#484896',
+        'fill-color': '#6e599f',
+        'fill-opacity': 0.7
+      },
+      filter: ['==', 'fid', '']
+    });
+    // hilight
+    map.addLayer({
+      id: 'election-district-hilight',
+      type: 'fill',
+      'source': 'thaielection2562',
+      'source-layer': 'thaielection2562',
+      paint: {
+        'fill-outline-color': '#484896',
+        'fill-color': '#6e599f',
+        'fill-opacity': 0.7
+      },
+      filter: ['==', 'fid', '']
+    });
 
-// // base tile layer
-// const cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
-// const positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-//   attribution: cartodbAttribution,
-//   opacity: 1,
-// }).addTo(map);
+    // // province
+    // map.addLayer({
+    //   id: 'thailand-province',
+    //   type: 'line',
+    //   source: {
+    //     type: 'vector',
+    //     tiles: [
+    //       `${location.origin}/build/vt/thailand_province/{z}/{x}/{y}.pbf`,
+    //     ],
+    //     maxzoom: 14
+    //   },
+    //   'source-layer': 'thailand_province',
+    //   layout: {
+    //     'line-join': 'round',
+    //     'line-cap': 'round'
+    //   },
+    //   paint: {
+    //     'line-color': '#69b4ff',
+    //     'line-width': 2
+    //   }
+    // });
+  });
 
-// overlay vector later
-const vectorTileUrl = 'build/vectortile/{z}/{x}-{y}.pbf';
-const vectorTileOptions = {
-  // rendererFactory: L.canvas.tile,
-  rendererFactory: L.svg.tile,
-  vectorTileLayerStyles: vectorTileStyling,
-  interactive: true,
-  maxZoom: 18,
-  maxNativeZoom: 14,
-  getFeatureId: getFeatureId
-};
+  // config map
+  map.fitBounds(defaultBounds);
+  map.on('zoomend', function () {
+    console.log('map zoom: ' + map.getZoom());
+  });
 
-const customPbfLayer = L.vectorGrid.protobuf(vectorTileUrl, vectorTileOptions).addTo(map);
+  map.on('click', function(e) {
+    const point = [e.point.x, e.point.y];
+    const features = map.queryRenderedFeatures(point, { layers: ['election-district-ui'] });
 
-customPbfLayer.on('click', async function (e) {
-  clearStyle();
-  if (selectedPartyName) {
-    await hilightByParty(selectedPartyName);
-  }
-
-  selectDistrict(e.layer);
-
-  L.DomEvent.stop(e);
-});
-customPbfLayer.addTo(map);
-
-// config map
-map.options.minZoom = 6;
-map.fitBounds(bounds)
-map.setView(mapFullPageCenter, 6);
-map.on('zoomend', function () {
-  console.log('map zoom: ' + map.getZoom());
-});
-map.on('click', function (e) {
-  console.log('map click:', e);
-});
-
-// UI interactions
-const select = document.getElementById("party-select");
-select.onchange = async function () {
-  // First time user select a party
-  if (!selectedPartyName) {
-    document.getElementById('app').classList.add('show-party');
-
-    if (isMobile()) {
-      zoomFullPage();
+    // Run through the selected features and set a filter
+    // to match features with matching Feature ID
+    // the `election-district-hilight` layer.
+    if (features && features.length > 0) {
+      const fid = features[0].properties.fid;
+      map.setFilter('election-district-hilight', ['==', 'fid', fid]);
+      selectDistrict(features[0]);
     } else {
-      const currentZoom = map.getZoom();
-      if (currentZoom < 8) {
-        zoomHalfPage();
+      // deselect
+      map.setFilter('election-district-hilight', ['==', 'fid', '']);
+      selectDistrict(false);
+    }
+  })
+
+  // UI interactions
+  const select = document.getElementById("party-select");
+  select.onchange = async function () {
+    // First time user select a party
+    if (!selectedPartyName) {
+      document.getElementById('app').classList.add('show-party');
+
+      if (isMobile()) {
+        zoomFullPage();
+      } else {
+        const currentZoom = map.getZoom();
+        if (currentZoom < 8) {
+          zoomHalfPage();
+        }
       }
     }
-  }
 
-  selectedPartyName = select.value;
-  clearStyle();
-  partyFeatureList = await hilightByParty(selectedPartyName);
-  document.getElementById('party-summary').innerHTML = `รวม ${partyFeatureList.length} เขต`;
+    selectedPartyName = select.value;
 
-  selectDistrict(hilight);
-};
+    partyFeatureList = await hilightByParty(selectedPartyName);
+    document.getElementById('party-summary').innerHTML = `รวม ${partyFeatureList.length} เขต`;
+
+    selectDistrict(hilight);
+  };
+
+  return map;
+}
 
 
 function setupShare() {
   function createPopup(url, width, height) {
     var newwindow = window.open(url, "", "width=" + width + ",height=" + height + ",scrollbars=true");
     if (window.focus) {
-        newwindow.focus()
+      newwindow.focus()
     }
     return false;
   }
@@ -289,43 +404,44 @@ function setupShare() {
   let share_buttons;
   share_buttons = document.getElementsByClassName("share-facebook");
   for (let i = 0; i < share_buttons.length; i++) {
-      let button = share_buttons[i];
-      button.onclick = function () {
-          let share_url = document.URL;
+    let button = share_buttons[i];
+    button.onclick = function () {
+      let share_url = document.URL;
 
-          FB.ui({
-              method: 'feed',
-              display: 'popup',
-              link: share_url,
-          }, function (response) {});
-      }
+      FB.ui({
+        method: 'feed',
+        display: 'popup',
+        link: share_url,
+      }, function (response) {
+      });
+    }
   }
 
   share_buttons = document.getElementsByClassName("share-twitter");
   for (let i = 0; i < share_buttons.length; i++) {
-      let button = share_buttons[i];
-      button.onclick = function () {
-          var share_url = document.URL;
-          var text = document.querySelector("meta[property='og:title']").getAttribute("content");
-          var retext = encodeURIComponent(text);
-          createPopup("https://twitter.com/share?text=" + retext + "&url=" + share_url, 550, 420);
-      }
+    let button = share_buttons[i];
+    button.onclick = function () {
+      var share_url = document.URL;
+      var text = document.querySelector("meta[property='og:title']").getAttribute("content");
+      var retext = encodeURIComponent(text);
+      createPopup("https://twitter.com/share?text=" + retext + "&url=" + share_url, 550, 420);
+    }
   }
 
   share_buttons = document.getElementsByClassName("share-line");
   for (let i = 0; i < share_buttons.length; i++) {
-      let button = share_buttons[i];
-      button.onclick = function () {
-          var share_url = document.URL;
-          createPopup("https://social-plugins.line.me/lineit/share?url=" + share_url, 550, 600);
-      }
+    let button = share_buttons[i];
+    button.onclick = function () {
+      var share_url = document.URL;
+      createPopup("https://social-plugins.line.me/lineit/share?url=" + share_url, 550, 600);
+    }
   }
 }
 
 async function setupParty() {
   const select = document.getElementById('party-select');
   let options = [
-    '<option disabled selected>เลือกเพรรค</option>'
+    '<option disabled selected>เลือกพรรค</option>'
   ];
   const partyResult = await fetchAsync(`./data/party.json`);
   partyList = partyResult.data || [];
@@ -334,6 +450,8 @@ async function setupParty() {
   });
   select.innerHTML = options.join('\n');
 }
+
+createMap();
 
 setupShare();
 
