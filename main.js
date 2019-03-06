@@ -258,7 +258,7 @@ function createMap() {
     map.addSource('thaielection2562', {
       type: 'vector',
       tiles: [
-        `${location.origin}/build/vt/thaielection2562/{z}/{x}/{y}.pbf`,
+        'https://rapee.github.io/election-map/build/vt/thaielection2562/{z}/{x}/{y}.pbf'
       ],
       maxzoom: 14
     });
