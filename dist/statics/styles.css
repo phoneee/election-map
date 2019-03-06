@@ -58,6 +58,30 @@ body {
   background-color: #ffffff;
 }
 
+.navbar-brand {
+  display: block;
+  font-size: 1.25rem;
+  line-height: inherit;
+  margin-right: 1rem;
+  white-space: nowrap;
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  left: 16px;
+}
+
+.navbar-brand img {
+  width: 100%;
+  max-width: 150px;
+}
+
+.navbar-brand h6 {
+  color: #4a4a4a;
+  font-size: 0.75rem;
+  margin-top: 10px;
+  text-shadow: 0 1px rgba(255,255,255,.7);
+}
+
 #map {
   width: 100vw;
   height: 100vh;
@@ -108,14 +132,14 @@ body {
 
 #ui-panel h2 {
   font-size: 45px;
+  text-shadow: 0 1px rgba(255,255,255,.7);
 }
 
 .show-party #ui-panel h2 {
   font-size: 21px;
 }
 
-#ui-panel,
-#ui-panel div {
+#ui-panel {
   font-size: 18px;
 }
 
@@ -204,4 +228,15 @@ body {
 
 .share-menu .share-button i {
   line-height: 35px;
+}
+
+#ui-panel .footer {
+  font-family: 'Libre Baskerville', 'The Matter', sans-serif;
+  text-align: center;
+  font-size: 10px;
+  margin-top: 40px;
+}
+
+#ui-panel .footer a {
+  text-decoration: underline;
 }
