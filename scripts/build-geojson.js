@@ -4,7 +4,7 @@ import vtPbf from 'vt-pbf';
 import fs from 'fs';
 import path from 'path';
 
-const INPUR_FILE = '../thaielectshp2019_v3.geojson';
+const INPUR_FILE = '../thaielectshp2019_v4.geojson';
 const OUTPUT_PATH = path.join(__dirname, '../build/vectortile');
 const MAX_ZOOM = 14;
 

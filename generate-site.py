@@ -61,7 +61,8 @@ logging.info('Rendering zone pages')
 with open('./data/election-zones.json') as ez:  
     election_zones = json.load(ez)
 
-df_candidates = pd.read_csv('./data/detailed-candidates.csv')
+df_candidates = pd.read_csv('./data/detailed-candidates.csv', index_col=0)
+df_candidates=df_candidates.loc[:, ~df_candidates.columns.str.match('Unnamed')]
 
 os.mkdir(prepend_dir('z'))
 

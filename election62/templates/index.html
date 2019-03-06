@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="title">
+    ข้อมูลเขตเลือกตั้งและรายชื่อผู้สมัคร
+</h1>
+<div id='root'>
+
+</div>
+
+<div class="note">
+<b>หมายเหตุ:</b>
+    ข้อมูลชุดนี้มาจากแอพพลิเคชั่น Smart Vote ของกกต. (อัพเดทเมื่อ {% now 'local', '%Y-%m-%d %H:%M' %})
+</div>
+
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+{% if env in ['prod', 'stage'] %}
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+{% else %}
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+{% endif %}
+<script type="text/babel" src="{{ ('//%s/statics/main.js' % deploy_path) | cache_buster }}"></script>
+
+{% endblock %}

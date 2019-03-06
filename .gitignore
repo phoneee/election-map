@@ -3,4 +3,6 @@ node_modules/
 thaielectshp2019_v2.geojson
 package-lock.json
 
-build/
+build/vectortile/15
+build/vectortile/16
+build/vectortile/17
