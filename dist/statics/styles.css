@@ -89,6 +89,16 @@ body {
   background: none;
 }
 
+#map .mapboxgl-popup {
+  font-family: 'Noto Sans Thai', sans-serif;
+}
+
+#map .mapboxgl-popup h4 {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+}
+
 .ui {
   pointer-events: initial;
 }

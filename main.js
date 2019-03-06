@@ -388,6 +388,33 @@ function createMap() {
     selectDistrict(hilight);
   };
 
+  // Create a popup, but don't add it to the map yet.
+  const popup = new mapboxgl.Popup({
+    offset: 20,
+    closeButton: false,
+    closeOnClick: false
+  });
+
+  map.on('mousemove', 'election-district-ui', function(e) {
+    // Change the cursor style as a UI indicator.
+    map.getCanvas().style.cursor = 'pointer';
+
+    const coordinates = e.lngLat;
+    // const coordinates = e.features[0]._geometry.coordinates.slice();
+    const district = e.features[0].properties;
+    const description = `<h4>${district.province}</h4>เขตเลือกตั้งที่ ${district.zone_num}`;
+    // Populate the popup and set its coordinates
+    // based on the feature found.
+    popup.setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map);
+  });
+
+  map.on('mouseleave', 'election-district-ui', function() {
+    map.getCanvas().style.cursor = '';
+    popup.remove();
+  });
+
   return map;
 }
 
