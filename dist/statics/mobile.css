@@ -24,15 +24,25 @@
     padding: 9px;
   }
 
+  #map .mapboxgl-ctrl-top-right {
+    top: initial;
+    bottom: 0;
+  }
+
+  #map .mapboxgl-ctrl-top-right .mapboxgl-ctrl {
+    margin: 0 0 70px 15px;
+  }
+
+
   .show-party #ui-panel {
     left: initial;
     right: 10px;
     margin: 0;
-    width: 50vw;
+    width: 60vw;
     padding: 0;
     bottom: 0;
     top: initial;
-    height: 210px;
+    height: 200px;
   }
   .show-party #ui-container {
     padding: 10px;
