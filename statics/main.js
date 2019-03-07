@@ -290,11 +290,19 @@ function createMap() {
   });
 
   map.on('load', function() {
-    // source data
+    // source data: thaielection2562
     map.addSource('thaielection2562', {
       type: 'vector',
       tiles: [
-        `${hostname}/build/vt/thaielection2562/{z}/{x}/{y}.pbf`
+        `${map_hostname}/build/vt/thaielection2562/{z}/{x}/{y}.pbf`
+      ],
+      maxzoom: 14
+    });
+    // source data: province
+    map.addSource('province', {
+      type: 'vector',
+      tiles: [
+        `${map_hostname}/build/vt/province/{z}/{x}/{y}.pbf`
       ],
       maxzoom: 14
     });
@@ -302,7 +310,7 @@ function createMap() {
     map.addLayer({
       id: 'election-district-ui',
       type: 'fill',
-      'source': 'thaielection2562',
+      source: 'thaielection2562',
       'source-layer': 'thaielection2562',
       paint: {
         'fill-opacity': 0
@@ -313,23 +321,32 @@ function createMap() {
     map.addLayer({
       id: 'election-district',
       type: 'line',
-      'source': 'thaielection2562',
+      source: 'thaielection2562',
       'source-layer': 'thaielection2562',
       layout: {
         'line-join': 'round',
         'line-cap': 'round'
       },
       paint: {
-        'line-width': 1,
-        'line-color': '#ff69b4',
-        'line-width': 1
+        'line-color': '#76e0c4',
+        // 'line-color': '#ff69b4',
+        'line-opacity': 0.4,
+        'line-width': [
+          'interpolate',
+          ['exponential', 0.5],
+          ['zoom'],
+          1, 0.3,
+          5, 0.5,
+          10, 2,
+          22, 4
+        ]
       }
     });
     // party
     map.addLayer({
       id: 'election-district-party',
       type: 'fill',
-      'source': 'thaielection2562',
+      source: 'thaielection2562',
       'source-layer': 'thaielection2562',
       paint: {
         'fill-outline-color': '#484896',
@@ -342,7 +359,7 @@ function createMap() {
     map.addLayer({
       id: 'election-district-hilight',
       type: 'fill',
-      'source': 'thaielection2562',
+      source: 'thaielection2562',
       'source-layer': 'thaielection2562',
       paint: {
         'fill-outline-color': '#484896',
@@ -352,27 +369,40 @@ function createMap() {
       filter: ['==', 'fid', '']
     });
 
-    // // province
-    // map.addLayer({
-    //   id: 'thailand-province',
-    //   type: 'line',
-    //   source: {
-    //     type: 'vector',
-    //     tiles: [
-    //       `${location.origin}/build/vt/thailand_province/{z}/{x}/{y}.pbf`,
-    //     ],
-    //     maxzoom: 14
-    //   },
-    //   'source-layer': 'thailand_province',
-    //   layout: {
-    //     'line-join': 'round',
-    //     'line-cap': 'round'
-    //   },
-    //   paint: {
-    //     'line-color': '#69b4ff',
-    //     'line-width': 2
-    //   }
-    // });
+    // province
+    map.addLayer({
+      id: 'thailand-province',
+      type: 'line',
+      source: 'province',
+      'source-layer': 'Province',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': '#5fb49d',
+        // 'line-color': '#76e0c4',
+        // 'line-color': '#ff69b4',
+        'line-width': [
+          'interpolate',
+          ['exponential', 0.5],
+          ['zoom'],
+          1, 0.6,
+          5, 1,
+          10, 5,
+          22, 20
+        ],
+        'line-opacity': [
+          'interpolate',
+          ['exponential', 0.5],
+          ['zoom'],
+          1, 0.8,
+          5, 0.6,
+          10, 0.4,
+          22, 0.3
+        ]
+      }
+    });
 
     resumeState();
   });
@@ -484,6 +514,17 @@ function setupShare() {
         display: 'popup',
         link: share_url,
       }, function (response) {
+        // track event
+        gtag('event', 'share', {
+          event_category: 'engagement',
+          event_label: selectedPartyName,
+          value: 1
+        });
+        fbq('track', 'Share', {
+          content_name: selectedPartyName,
+          content_type: 'party',
+          value: 1
+        });
       });
     }
   }
@@ -496,6 +537,18 @@ function setupShare() {
       var text = document.querySelector("meta[property='og:title']").getAttribute("content");
       var retext = encodeURIComponent(text);
       createPopup("https://twitter.com/share?text=" + retext + "&url=" + share_url, 550, 420);
+
+      // track event
+      gtag('event', 'share', {
+        event_category: 'engagement',
+        event_label: selectedPartyName,
+        value: 1
+      });
+      fbq('track', 'Share', {
+        content_name: selectedPartyName,
+        content_type: 'party',
+        value: 1
+      });
     }
   }
 
@@ -505,6 +558,18 @@ function setupShare() {
     button.onclick = function () {
       var share_url = loadShareURL(selectedPartyName);
       createPopup("https://social-plugins.line.me/lineit/share?url=" + share_url, 550, 600);
+
+      // track event
+      gtag('event', 'share', {
+        event_category: 'engagement',
+        event_label: selectedPartyName,
+        value: 1
+      });
+      fbq('track', 'Share', {
+        content_name: selectedPartyName,
+        content_type: 'party',
+        value: 1
+      });
     }
   }
 }
@@ -592,6 +657,18 @@ async function setupParty() {
     selectDistrict(hilight);
 
     setHistoryState({ party: selectedPartyName });
+
+    // track event
+    gtag('event', 'select_party', {
+      event_category: 'engagement',
+      event_label: selectedPartyName,
+      value: 1
+    });
+    fbq('track', 'ViewContent', {
+      content_name: selectedPartyName,
+      content_type: 'party',
+      value: 1
+    });
   });
 }
 
