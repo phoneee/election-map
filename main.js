@@ -25,6 +25,11 @@ function isMobile() {
   return width < 764;
 }
 
+function isTouchDevice() {
+  return 'ontouchstart' in window        // works on most browsers
+    || navigator.maxTouchPoints;       // works on IE10/11 and Surface
+};
+
 // Lighten
 // const NewColor = LightenDarkenColor("#F06D06", 20);
 // Darken
@@ -345,7 +350,7 @@ function createMap() {
     console.log('map zoom: ' + map.getZoom());
   });
 
-  map.on('click', function(e) {
+  function tapEvent(e) {
     const point = [e.point.x, e.point.y];
     const features = map.queryRenderedFeatures(point, { layers: ['election-district-ui'] });
 
@@ -361,7 +366,18 @@ function createMap() {
       map.setFilter('election-district-hilight', ['==', 'fid', '']);
       selectDistrict(false);
     }
-  })
+  }
+
+  // handle click or touch device
+  if (isTouchDevice()) {
+    map.on('touchend', function(e) {
+      tapEvent(e);
+    });
+  } else {
+    map.on('click', function(e) {
+      tapEvent(e);
+    });
+  }
 
   // UI interactions
   const select = document.getElementById("party-select");
