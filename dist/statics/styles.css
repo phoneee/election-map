@@ -1,5 +1,6 @@
-html, body {
-    font-family: 'Noto Sans Thai', serif;
+html,
+body {
+    font-family: 'Noto Sans Thai', sans-serif;
 }
 
 .dev-banner {
@@ -9,7 +10,9 @@ html, body {
     text-align: center;
 }
 
-a, a:hover, a:visited {
+a,
+a:hover,
+a:visited {
     color: black;
     text-decoration: none;
 }
@@ -18,7 +21,9 @@ a, a:hover, a:visited {
     clear: both;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-family: 'Libre Baskerville', 'The Matter', serif;
 }
 
@@ -39,81 +44,161 @@ h1.title {
     text-align: center;
 }
 
-.form {
+body {
+    margin: 0;
+    background-color: #ffffff;
+}
+
+#app {
+    position: relative;
+    background-color: #e1e1e2;
+}
+
+#app.show-party {
+    background-color: #ffffff;
+}
+
+.navbar-brand {
+    display: block;
+    font-size: 1.25rem;
+    line-height: inherit;
+    margin-right: 1rem;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 10;
+    top: 6px;
+    left: 16px;
+}
+
+.navbar-brand img {
+    width: 100%;
+    max-width: 150px;
+}
+
+.navbar-brand h6 {
+    color: #4a4a4a;
+    font-size: 0.75rem;
+    margin-top: 10px;
+    text-shadow: 0 1px rgba(255,255,255,.7);
+}
+
+#map {
+    width: 100vw;
+    height: 100vh;
+    z-index: 1 ;
+    background: none;
+}
+
+#map .mapboxgl-popup {
+    font-family: 'Noto Sans Thai', sans-serif;
+}
+
+#map .mapboxgl-popup h4 {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.ui {
+    pointer-events: initial;
+}
+
+#ui-panel {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 40px;
+    padding: 100px 0 0;
+    /* background: rgba(255, 255, 255, 0.6); */
+    z-index: 10;
+    pointer-events: none;
+
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#ui-container {
     text-align: center;
 }
 
-.form .postcode-label {
-    font-size: 18px;
-    margin-bottom: 20px;
+.show-party #ui-container {
+    background: #ffffff;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px 0 #C3C3C3;
+    text-align: left;
+    border-radius: 12px;
 }
 
-.ui-guide {
+.show-party #ui-panel {
+    width: 360px;
+    left: 55%;
+    left: calc(50% + 40px);
+
+    max-width: 400px;
+    margin: 0 auto 0 0;
+}
+
+#ui-panel h2 {
+    font-size: 45px;
+    text-shadow: 0 1px rgba(255,255,255,.7);
+}
+
+.show-party #ui-panel h2 {
+    font-size: 21px;
+}
+
+#ui-panel {
+    font-size: 18px;
+}
+
+#party-select {
+    width: 80%;
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+.show-party #party-select {
+    width: 100%;
+    margin-top: 0;
+}
+
+#party-summary {
+    margin: 20px 0;
+    text-decoration: underline;
+}
+
+#party-howto {
+    display: block;
     color: #9B9B9B;
 }
-
-.ui-guide i {
-    margin-right: 5px;
+.show-party.show-district #party-howto {
+    display: none;
 }
 
-.form input {
-    padding: 5px;
-    font-size: 24px;
-    line-height: 23px;
-    border: 2px solid #F0324B;
-    width: 224px;
-    color: #000000;
-    font-family: "Libre Baskerville";
-    font-size: 24px;
-    letter-spacing: 0.05px;
-    line-height: 23px;
-    text-align: center;
+#district-info {
+    display: none;
+}
+.show-party.show-district #district-info {
+    display: block;
 }
 
-.results {
-    padding: 0px 10px;
-    text-align: center;
-    width: 80%;
-    margin: auto;
+#district-name {
+    font-size: 18px;
+    font-weight: bold;
 }
-
-.result-label {
-    margin-top: 20px;
+#district-candidate {
     margin-bottom: 20px;
 }
 
-ul {
-    list-style: none;
-    padding: 0px;
-}
-
-.zone .header {
-    font-size: 15px;
-    font-weight: bold;
-    letter-spacing: 0.03px;
-}
-
-li.sub-area {
-    display: inline-block;
-    margin-right: 5px;
-}
-
-.zone .area-name {
-    margin-right: 5px;
-}
-
-.zone .area-name::before {
-    content: "●";
-    font-weight: bolder;
-    font-size: 11px;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
-.zones .zone {
+#district-link {
+    display: block;
     padding: 5px 20px;
     width: 100%;
     max-width: 450px;
+    font-size: 13px;
+    color: #747474;
     border: 1px solid #E1E1E2;
     text-align: center;
     margin: auto;
@@ -124,158 +209,9 @@ li.sub-area {
     box-shadow: 0 2px 4px 0 #C3C3C3;
 }
 
-.zones a {
-    text-decoration: none;
-    color: black;
-}
-
-.zones a:visited {
-    color: black;
-}
-
-.zone-page {
-    width: 80%;
-    margin: auto;
-}
-
-h1.zone-title {
-    font-size: 50px;
-}
-
-.zone-information span.area:before {
-    content: "●";
-    margin-right: 5px;
-}
-
-.candidate {
-    position: relative;
-    margin-top: 30px;
-    border-top: 2px solid #ddd;
-}
-
-.candidate .avatar {
-    float: left;
-    width: 30%x;
-    max-width: 214px;
-    margin-top: -2px;
-    border-top: 2px solid #ddd;
-    padding: 16px;
-}
-
-.candidate .details {
-    float: left;
-    margin-left: 0px;
-}
-
-.candidate .additional-details {
-    color: #747474;
-    font-size: 16px;
-}
-
-.candidate .additional-details ul {
-    margin-top: 10px;
-    list-style: disc;
-    padding: 0px 15px
-}
-
-.candidate .additional-details ul span {
-    margin-left: -5px;
-}
-
-.candidate .details .name {
-    font-size: 20px;
-}
-
-.candidate .header h2 {
-    margin-top: 10px;
-}
-
-.candidate .details a {
-    margin-top: 10px;
-    color: #F0324B;
-    text-decoration: none;
-    font-weight: normal;
-    display: inline-block;
-}
-
-.candidate .details i {
-    margin-right:  4px;
-}
-
-.candidate .number {
-    color: white;
-    top: 0px;
-    background-color: #F0324B;
-    text-align: center;
-    padding-top: 5px;
-    position: absolute;
-    right: 0px;
-    font-weight: bold;
-    width: 97px;
-    height: 97px;
-}
-
-.candidate .number div {
-    font-family: 'The Matter', serif;
-    font-weight: 700;
-    text-align: center;
-    font-size: 60px;
-    margin-top: -10px;
-}
-
-.note {
-    margin: auto;
-    margin-top: 50px;
-    width: 80%;
-    color: #4A4A4A;
-    font-size: 12px;
-}
-
-.separator {
-    margin: 0px 10px;
-}
-
-.footer {
-    color: #4A4A4A;
-    font-size: 12px;
-    margin-top: 40px;
-    padding: 10px 0px;
-    font-family: 'Libre Baskerville', 'The Matter', serif;
-    text-align: center;
-}
-
-.footer a {
-    border-bottom: 1px solid black;
-}
-
-.zone-page ul.menu {
-    font-size: 20px;
-    text-align: center;
-    margin: 0px;
-    padding: 0px;
-    margin-top: 60px;
-}
-
-ul.menu li {
-    border: 2px solid #F0324B;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.back-button {
-    display: block;
-    text-align: right;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.back-button a, .back-button a:hover, .back-button a:visited {
-    color: #F0324B;
->>>>>>> update web
-}
-
 
 .share-menu {
+    margin-top: 40px;
     padding-top: 10px;
     border-top: 1px solid #E1E1E2;
     color: #F0324B;
@@ -286,7 +222,8 @@ ul.menu li {
 .share-menu .label {
     line-height: 35px;
     margin-right: 10px;
-    font-weight: bold;
+    font-weight: normal;
+    font-size: 13px;
 }
 
 .share-menu .share-button {
@@ -303,47 +240,13 @@ ul.menu li {
     line-height: 35px;
 }
 
-
-/* ul.menu li.sharer {
-    float: right;
-    font-family: sans-serif;
-    background: #F0324B;
-    font-weight: normal;
-    display: inline-block;
-    line-height: 50px;
-    height: 50px;
-    border: 0px;
+#ui-panel .footer {
+    font-family: 'Libre Baskerville', 'The Matter', sans-serif;
+    text-align: center;
+    font-size: 10px;
+    margin-top: 40px;
 }
 
-ul.menu li.sharer, ul.menu li.sharer a {
-    color: white;
+#ui-panel .footer a {
+    text-decoration: underline;
 }
-
-li.sharer .labelbox {
-    background: #DB253D;
-    line-height: 50px;
-    height: 50px;
-    display: inline-block;
-    padding: 0 20px;
-}
-
-li.sharer .labelbox i {
-    margin-right: 5px;
-}
-
-li.sharer .social a {
-    display: inline-block;
-    padding: 10px;
-    cursor: pointer;
-}
-
-li.sharer .social a:after {
-    content: "";
-    display: inline-block;
-    position: relative;
-    top: calc(50% - 9px);
-    right: -11px;
-    background: #fff;
-    width: 1px;
-    height: 18px;
-} */

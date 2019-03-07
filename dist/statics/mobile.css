@@ -1,79 +1,104 @@
-@media only screen and (max-width: 800px) {
-    .zone-page h1 {
-        font-size: 23px;
+@media only screen and (max-width: 763px) {
+    .navbar-brand {
+        transform: scale(0.5);
+        transform-origin: left top;
+        z-index: 10;
     }
 
-    .zone-page h2 {
-        font-size: 17px;
+    #ui-container h2 {
+        font-size: 35px;
     }
 
-    .zone-page h4 {
-        font-size: 14px;
+    #party-select {
+        color: #F0324B;
+        background: #ffffff;
+        font-size: 16px;
+        padding: 9px;
     }
 
-    .candidate {
-        margin-top: 15px;
+    .show-party #ui-panel {
+        left: initial;
+        right: 0;
+        margin: 0;
+        width: 60vw;
+        padding: 0;
+        bottom: 0;
+        top: initial;
+        height: 210px;
+    }
+    .show-party #ui-container {
+        padding: 10px;
+        box-shadow: none;
+        background: rgba(255,255,255,0.6);
     }
 
-    .candidate .avatar {
-        max-width: 100px;
-        padding: 8px;
+    .show-party #ui-container h2 {
+        display: none;
+    }
+    .show-party #party-select {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        max-width: 100vw;
+        border: none;
+        box-shadow: 0 2px 4px 0 #C3C3C3;
+        border-radius: 0;
+        color: #000000;
     }
 
-    .candidate .details .name {
-        font-size: 14px;
-        line-height: 16px;
+    #party-summary {
+        margin: 0 0 10px;
     }
 
-    .candidate .number {
-        width: 45px;
-        height: 45px;
+    #ui-panel,
+    #ui-panel div {
+        font-size: 12px;
+    }
+
+    #district-name {
+        font-size: 12px;
+    }
+
+    #district-candidate {
+        margin-bottom: 10px;
+    }
+
+    #district-link {
         font-size: 9px;
     }
 
-    .candidate .number div {
-        font-size: 28px;
-        margin-top: -5px;
+    #share {
+        position: fixed;
+        left: 0;
+        right: 0;
+        background: white;
+        bottom: 0;
     }
 
-    .candidate .details {
-        float: left;
-        width: 60%;
-        padding-top: 10px;
+    .share-menu {
+        margin: 0;
+        padding: 10px 0;
     }
 
-    .candidate .details h2 {
-        margin-bottom: 5px;
+    .share-menu .label {
+        font-size: 13px;
     }
 
-    .candidate .additional-details {
-        color: #747474;
-        font-size: 11px;
-        word-wrap: break-word;
+    .share-menu .share-button i {
+        font-size: 18px;
     }
 
-    .candidate .details .header {
-        width: 70%;
+    .leaflet-control-container {
+        display: none;
     }
 
-    .candidate .details i {
-        font-size: 9px;
-    }
-
-    .candidate .header h2 {
+    .show-party .leaflet-control-container {
         display: block;
-        margin-top: 0px;
-        margin-bottom: 5px;
-        width: 100%;
     }
 
-    .candidate .details a {
-        position: relative;
-        font-size: 12px;
-        margin-top: 10px;
-    }
-
-    .back-button {
-        font-size: 12px;
+    .leaflet-control-container .leaflet-top.leaflet-left {
+        top: 60px;
     }
 }
