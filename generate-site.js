@@ -18,7 +18,7 @@ const meta = {
   ga_id: 'UA-43653558-19',
   mapbox_token: 'pk.eyJ1IjoibGJ1ZCIsImEiOiJCVTZFMlRRIn0.0ZQ4d9-WZrekVy7ML89P4A',
   title: 'พรรคไหนส่งผู้สมัครเขตไหนบ้าง?',
-  description: 'พรรคไหน ส่งผู้สมัครเขตไหนบ้าง? เช็คข้อมูลกันได้ที่นี่',
+  description: 'เช็คข้อมูลกันได้ที่นี่ เปรียบเทียบพรรคชนพรรค',
   keywords: 'การเมือง, เลือกตั้ง, ประชาธิปไตย, การเมืองไทย, election, politics, democracy, thai politics, visualization, infographic, interactive, data journalism',
   hostname: HOSTNAME,
   map_hostname: 'https://rapee.github.io/election-map'
@@ -32,6 +32,7 @@ fs.writeFileSync(`./dist/index.html`, output, 'utf8');
 // share pages
 partyList.forEach(party => {
   const data = Object.assign({}, meta, {
+    title: `${meta.title}: ${party.name} (${party.count} เขต)`,
     party: party.name
   });
   output = template.share(data);
