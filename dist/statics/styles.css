@@ -153,6 +153,36 @@ body {
   font-size: 18px;
 }
 
+#ui-panel .choices {
+  pointer-events: initial;
+}
+
+#ui-panel .choices .choices__inner {
+  background: #ffffff;
+}
+
+#ui-panel .choices .choices__list--single {
+  padding: 0 16px 0 0;
+}
+
+#ui-panel .choices .choices__list--single .choices__item {
+  padding: 0;
+  color: #f0324b;
+}
+
+#ui-panel .choices .choices__item {
+  text-align: left;
+  color: #000000;
+  padding: 4px 10px;
+  font-size: 16px;
+  font-family: 'Noto Sans Thai', sans-serif;
+}
+
+#ui-panel .choices .choices__item img {
+  max-width: 30px;
+  height: 30px;
+}
+
 #party-select {
   width: 80%;
   max-width: 400px;

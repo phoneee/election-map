@@ -17,14 +17,14 @@
   }
 
   .show-party #ui-panel {
-      left: initial;
-      right: 0;
-      margin: 0;
-      width: 60vw;
-      padding: 0;
-      bottom: 0;
-      top: initial;
-      height: 210px;
+    left: initial;
+    right: 0;
+    margin: 0;
+    width: 60vw;
+    padding: 0;
+    bottom: 0;
+    top: initial;
+    height: 210px;
   }
   .show-party #ui-container {
     padding: 10px;
@@ -35,7 +35,8 @@
   .show-party #ui-container h2 {
     display: none;
   }
-  .show-party #party-select {
+  .show-party #party-select,
+  .show-party #ui-panel .choices {
     position: fixed;
     top: 0;
     left: 0;
@@ -50,6 +51,11 @@
 
   #party-summary {
     margin: 0 0 10px;
+  }
+
+  #ui-panel {
+    width: 90vw;
+    left: 5vw;
   }
 
   #ui-panel,

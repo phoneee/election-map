@@ -468,14 +468,61 @@ function setupShare() {
 async function setupParty() {
   const select = document.getElementById('party-select');
   let options = [
-    '<option disabled selected>เลือกพรรค</option>'
+    '<option disabled selected value="">เลือกพรรค</option>'
   ];
   const partyResult = await fetchAsync(`./data/party.json`);
-  partyList = partyResult.data || [];
+  partyList = partyResult || [];
   partyList.forEach(p => {
-    options.push(`<option class="op" value="${p.name}">${p.name}</option>`);
+    options.push(`<option class="op" value="${p.name}">${p.name} (${p.count} เขต)</option>`);
   });
   select.innerHTML = options.join('\n');
+
+  // setup searchable dropdown
+  const customTemplates = new Choices(select, {
+    searchResultLimit: 500,
+    itemSelectText: '',
+    noChoicesText: 'ไม่พบตัวเลือก',
+    noResultsText: 'ไม่พบข้อมูล',
+    sortFn: function(a, b) {
+      // sort by Thai dictionary order
+      return a.value.localeCompare(b.value, 'th', {sensitivity: 'base'});
+    },
+    callbackOnCreateTemplates: function(strToEl) {
+      var classNames = this.config.classNames;
+      var itemSelectText = this.config.itemSelectText;
+      return {
+        item: function(classNames, data) {
+          return strToEl('\
+            <div\
+              class="'+ String(classNames.item) + ' ' + String(data.highlighted ? classNames.highlightedState : classNames.itemSelectable) + '"\
+              data-item\
+              data-id="'+ String(data.id) + '"\
+              data-value="'+ String(data.value) + '"\
+              '+ String(data.active ? 'aria-selected="true"' : '') + '\
+              '+ String(data.disabled ? 'aria-disabled="true"' : '') + '\
+              >' + (data.value ? '<img src="dist/statics/party-logos/' + data.value + '.png" style="margin-right:10px;" />' : '') + '\
+              ' + String(data.value || 'เลือกพรรค') + '\
+            </div>\
+          ');
+        },
+        choice: function(classNames, data) {
+          return strToEl('\
+            <div\
+              class="'+ String(classNames.item) + ' ' + String(classNames.itemChoice) + ' ' + String(data.disabled ? classNames.itemDisabled : classNames.itemSelectable) + '"\
+              data-select-text="'+ String(itemSelectText) + '"\
+              data-choice \
+              '+ String(data.disabled ? 'data-choice-disabled aria-disabled="true"' : 'data-choice-selectable') + '\
+              data-id="'+ String(data.id) + '"\
+              data-value="'+ String(data.value) + '"\
+              '+ String(data.groupId > 0 ? 'role="treeitem"' : 'role="option"') + '\
+              >' + (data.value ? '<img src="dist/statics/party-logos/' + data.value + '.png" style="margin-right:10px;" />' : '') + '\
+              ' + String(data.label) + '\
+            </div>\
+          ');
+        },
+      };
+    }
+  });
 }
 
 createMap();
