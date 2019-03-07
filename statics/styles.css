@@ -99,6 +99,24 @@ body {
   line-height: 1;
 }
 
+#map .mapboxgl-ctrl-top-right {
+  top: 100px;
+  right: initial;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s ease-out;
+}
+
+.show-party #map .mapboxgl-ctrl-top-right {
+  opacity: 1;
+  visibility: visible;
+}
+
+#map .mapboxgl-ctrl-top-right .mapboxgl-ctrl {
+  margin: 10px 0 0 20px;
+}
+
 .ui {
   pointer-events: initial;
 }
