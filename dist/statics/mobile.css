@@ -5,6 +5,14 @@
     z-index: 10;
   }
 
+  .show-party .navbar-brand {
+    top: initial;
+    bottom: 0;
+    transform-origin: left bottom;
+    left: 50%;
+    transform: scale(0.35)translate(-50%,0);
+  }
+
   #ui-container h2 {
     font-size: 35px;
   }
