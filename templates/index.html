@@ -40,13 +40,13 @@
     <link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43653558-19"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga_id }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'UA-43653558-19');
+        gtag('config', '{{ ga_id }}');
     </script>
     <!-- Facebook Pixel Code -->
     <script>
@@ -58,11 +58,11 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1867967129974391');
+        fbq('init', '{{ fb_pixel_id }}');
         fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=1867967129974391&ev=PageView&noscript=1"
+        src="https://www.facebook.com/tr?id={{ fb_pixel_id }}&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Facebook Pixel Code -->
 </head>
@@ -121,7 +121,7 @@
     <script>
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '171048360504115',
+                appId: '{{ fb_app_id }}',
                 autoLogAppEvents: true,
                 xfbml: true,
                 version: 'v3.2'
@@ -140,7 +140,7 @@
     </script>
     <script type="text/javascript">
         var hostname = '{{ hostname }}';
-        mapboxgl.accessToken = 'pk.eyJ1IjoibGJ1ZCIsImEiOiJCVTZFMlRRIn0.0ZQ4d9-WZrekVy7ML89P4A';
+        mapboxgl.accessToken = '{{ mapbox_token }}';
     </script>
     <script type="text/javascript" src="statics/main.js"></script>
 </body>

@@ -484,6 +484,17 @@ function setupShare() {
         display: 'popup',
         link: share_url,
       }, function (response) {
+        // track event
+        gtag('event', 'share', {
+          event_category: 'engagement',
+          event_label: selectedPartyName,
+          value: 1
+        });
+        fbq('track', 'Share', {
+          content_name: selectedPartyName,
+          content_type: 'party',
+          value: 1
+        });
       });
     }
   }
@@ -496,6 +507,18 @@ function setupShare() {
       var text = document.querySelector("meta[property='og:title']").getAttribute("content");
       var retext = encodeURIComponent(text);
       createPopup("https://twitter.com/share?text=" + retext + "&url=" + share_url, 550, 420);
+
+      // track event
+      gtag('event', 'share', {
+        event_category: 'engagement',
+        event_label: selectedPartyName,
+        value: 1
+      });
+      fbq('track', 'Share', {
+        content_name: selectedPartyName,
+        content_type: 'party',
+        value: 1
+      });
     }
   }
 
@@ -505,6 +528,18 @@ function setupShare() {
     button.onclick = function () {
       var share_url = loadShareURL(selectedPartyName);
       createPopup("https://social-plugins.line.me/lineit/share?url=" + share_url, 550, 600);
+
+      // track event
+      gtag('event', 'share', {
+        event_category: 'engagement',
+        event_label: selectedPartyName,
+        value: 1
+      });
+      fbq('track', 'Share', {
+        content_name: selectedPartyName,
+        content_type: 'party',
+        value: 1
+      });
     }
   }
 }
@@ -592,6 +627,18 @@ async function setupParty() {
     selectDistrict(hilight);
 
     setHistoryState({ party: selectedPartyName });
+
+    // track event
+    gtag('event', 'select_party', {
+      event_category: 'engagement',
+      event_label: selectedPartyName,
+      value: 1
+    });
+    fbq('track', 'ViewContent', {
+      content_name: selectedPartyName,
+      content_type: 'party',
+      value: 1
+    });
   });
 }
 

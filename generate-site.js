@@ -13,6 +13,10 @@ const HOSTNAME = process.env.ENV === 'production'
   : (process.env.HOSTNAME || 'http://127.0.0.1:8080');
 
 const meta = {
+  fb_app_id: '171048360504115',
+  fb_pixel_id: '1867967129974391',
+  ga_id: 'UA-43653558-19',
+  mapbox_token: 'pk.eyJ1IjoibGJ1ZCIsImEiOiJCVTZFMlRRIn0.0ZQ4d9-WZrekVy7ML89P4A',
   title: 'พรรคไหนส่งผู้สมัครเขตไหนบ้าง?',
   description: 'พรรคไหน ส่งผู้สมัครเขตไหนบ้าง? เช็คข้อมูลกันได้ที่นี่',
   keywords: 'การเมือง, เลือกตั้ง, ประชาธิปไตย, การเมืองไทย, election, politics, democracy, thai politics, visualization, infographic, interactive, data journalism',
