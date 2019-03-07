@@ -26,9 +26,9 @@
 
   .show-party #ui-panel {
     left: initial;
-    right: 0;
+    right: 10px;
     margin: 0;
-    width: 60vw;
+    width: 50vw;
     padding: 0;
     bottom: 0;
     top: initial;
@@ -114,5 +114,9 @@
 
   .leaflet-control-container .leaflet-top.leaflet-left {
     top: 60px;
+  }
+
+  #ui-panel .footer {
+    display: none;
   }
 }
