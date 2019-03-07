@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>พรรคไหนส่งผู้สมัครเขตไหนบ้าง?</title>
+
+    <meta content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi"
+        name="viewport">
+    <meta charset="utf-8" />
+
+    <!-- for Google -->
+    <meta name="description" content="พรรคไหน ส่งผู้สมัครเขตไหนบ้าง? เช็คข้อมูลกันได้ที่นี่">
+    <meta name="keywords" content="การเมือง, เลือกตั้ง, ประชาธิปไตย, การเมืองไทย, election, politics, democracy, thai politics, visualization, infographic, interactive, data journalism">
+    <meta name="author" content="elect.in.th">
+
+    <!-- for Facebook -->
+    <meta property="fb:app_id" content="">
+    <meta property="og:title" content="พรรคไหนส่งผู้สมัครเขตไหนบ้าง?">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://rapee.github.io/election-map/statics/cover-map.png">
+    <meta property="og:url" content="https://rapee.github.io/election-map">
+    <meta property="og:description" content="พรรคไหน ส่งผู้สมัครเขตไหนบ้าง? เช็คข้อมูลกันได้ที่นี่">
+
+    <!-- for Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="พรรคไหนส่งผู้สมัครเขตไหนบ้าง?">
+    <meta name="twitter:description" content="พรรคไหน ส่งผู้สมัครเขตไหนบ้าง? เช็คข้อมูลกันได้ที่นี่">
+    <meta name="twitter:image" content="https://rapee.github.io/election-map/statics/cover-map.png">
+
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="statics/header.css" />
+    <link rel="stylesheet" type="text/css" href="statics/styles.css" />
+    <link rel="stylesheet" type="text/css" href="statics/mobile.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/styles/choices.min.css">
+    <link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43653558-19"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-43653558-19');
+    </script>
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1867967129974391');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=1867967129974391&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel Code -->
+</head>
+
+<body>
+
+    <div id="app">
+        <a class="navbar-brand" href="https://elect.in.th/">
+          <img src="https://elect.in.th/wp-content/uploads/2018/10/site-logo.png">
+          <h6>In VOTE We TRUST</h6>
+        </a>
+        <div id="map"></div>
+        <div id="ui-panel">
+            <div id="ui-container">
+                <h2>พรรคอะไร ลงเขตไหนบ้าง?</h2>
+                <select id="party-select" class="ui select2-main" name="a"></select>
+                <div id="party-summary"></div>
+                <div id="party-howto"></div>
+                <div id="district-info" class="ui">
+                    <h4 id="district-name"></h4>
+                    <div id="district-candidate"></div>
+                    <a id="district-link" href="" target="_blank">ดูประวัติและรายชื่อผู้สมัครอื่นในเขต</a>
+                    <div id="share">
+                        <div class="share-menu">
+                            <span class="label">Share</span>
+                            <span class="share-button">
+                                <a class="share-facebook"><i class="fab fa-facebook-f fa-fw"></i></a>
+                            </span>
+                            <span class="share-button">
+                                <a class="share-twitter"><i class="fab fa-twitter fa-fw"></i></a>
+                            </span>
+                            <span class="share-button">
+                                <a class="share-line"><i class="fab fa-line fa-fw"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <div class="credit">
+                            Designed by <a href="https://www.boonmeelab.com" target="_blank">Boonmee Lab</a> <span class="separator">|</span>
+                            Developed by <a href="https://www.facebook.com/phoneee" target="_blank">Dollapak Suwanpunya</a> &amp; <a href="https://github.com/rapee" target="_blank">Rapee Suveeranont</a> <br>
+                            <a href="https://github.com/phoneee/election-map" target="_blank">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                            <span class="separator">|</span>
+                            <a href="http://bit.ly/election62-missing-data" target="_blank">แจ้งปัญหาการใช้งาน</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/scripts/choices.min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '171048360504115',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v3.2'
+            });
+        };
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script type="text/javascript">
+        var hostname = 'https://rapee.github.io/election-map';
+        mapboxgl.accessToken = 'pk.eyJ1IjoibGJ1ZCIsImEiOiJCVTZFMlRRIn0.0ZQ4d9-WZrekVy7ML89P4A';
+    </script>
+    <script type="text/javascript" src="statics/main.js"></script>
+</body>
+
+</html>
