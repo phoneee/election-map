@@ -30,6 +30,24 @@ function isTouchDevice() {
     || navigator.maxTouchPoints;       // works on IE10/11 and Surface
 };
 
+function loadQueryString() {
+  const search = location.search.substring(1);
+  if (!search) return {};
+  return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+}
+
+function createQueryString(obj) {
+  return Object.keys(obj).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(obj[k])}`).join('&');
+}
+
+function setHistoryState(params = {}) {
+  // set page state
+  if (history) {
+    const state = Object.assign(loadQueryString(), params);
+    history.pushState (state, selectedPartyName, '?' + createQueryString(state));
+  }
+}
+
 // Lighten
 // const NewColor = LightenDarkenColor("#F06D06", 20);
 // Darken
@@ -174,6 +192,9 @@ let partyFeatureList = [];
 let selectedPartyName;
 // Currently selected district feature ID
 let hilight;
+
+const selectParty = document.getElementById('party-select');
+let selectPartyChoice;
 
 const showparty = {
   'color': '#781f2e',
@@ -342,12 +363,34 @@ function createMap() {
     //     'line-width': 2
     //   }
     // });
+
+    resumeState();
   });
 
   // config map
-  map.fitBounds(defaultBounds);
+  const qs = loadQueryString();
+  if (qs.c || qs.z) {
+    const center = qs.c && qs.c.split(',');
+    const viewOptions = {};
+    if (center) viewOptions.center = center;
+    if (qs.z) viewOptions.zoom = qs.z;
+    map.jumpTo(viewOptions);
+  } else {
+    map.fitBounds(defaultBounds);
+  }
+
   map.on('zoomend', function () {
-    console.log('map zoom: ' + map.getZoom());
+    setHistoryState({
+      c: map.getCenter().toArray(),
+      z: map.getZoom()
+    });
+  });
+
+  map.on('moveend', function (e) {
+    setHistoryState({
+      c: map.getCenter().toArray(),
+      z: map.getZoom()
+    });
   });
 
   function tapEvent(e) {
@@ -378,31 +421,6 @@ function createMap() {
       tapEvent(e);
     });
   }
-
-  // UI interactions
-  const select = document.getElementById("party-select");
-  select.onchange = async function () {
-    // First time user select a party
-    if (!selectedPartyName) {
-      document.getElementById('app').classList.add('show-party');
-
-      if (isMobile()) {
-        zoomFullPage();
-      } else {
-        const currentZoom = map.getZoom();
-        if (currentZoom < 8) {
-          zoomHalfPage();
-        }
-      }
-    }
-
-    selectedPartyName = select.value;
-
-    partyFeatureList = await hilightByParty(selectedPartyName);
-    document.getElementById('party-summary').innerHTML = `รวม ${partyFeatureList.length} เขต`;
-
-    selectDistrict(hilight);
-  };
 
   // Create a popup, but don't add it to the map yet.
   const popup = new mapboxgl.Popup({
@@ -482,7 +500,6 @@ function setupShare() {
 }
 
 async function setupParty() {
-  const select = document.getElementById('party-select');
   let options = [
     '<option disabled selected value="">เลือกพรรค</option>'
   ];
@@ -491,10 +508,10 @@ async function setupParty() {
   partyList.forEach(p => {
     options.push(`<option class="op" value="${p.name}">${p.name} (${p.count} เขต)</option>`);
   });
-  select.innerHTML = options.join('\n');
+  selectParty.innerHTML = options.join('\n');
 
   // setup searchable dropdown
-  const customTemplates = new Choices(select, {
+  selectPartyChoice = new Choices(selectParty, {
     searchResultLimit: 500,
     itemSelectText: '',
     noChoicesText: 'ไม่พบตัวเลือก',
@@ -539,6 +556,40 @@ async function setupParty() {
       };
     }
   });
+
+  // UI interactions
+  // selectParty.onchange = async function () {s
+  selectParty.addEventListener('addItem', async function(e) {
+    // First time user select a party
+    if (!selectedPartyName) {
+      document.getElementById('app').classList.add('show-party');
+
+      if (isMobile()) {
+        zoomFullPage();
+      } else {
+        const currentZoom = map.getZoom();
+        if (currentZoom < 8) {
+          zoomHalfPage();
+        }
+      }
+    }
+
+    selectedPartyName = selectParty.value;
+
+    partyFeatureList = await hilightByParty(selectedPartyName);
+    document.getElementById('party-summary').innerHTML = `รวม ${partyFeatureList.length} เขต`;
+
+    selectDistrict(hilight);
+
+    setHistoryState({ party: selectedPartyName });
+  });
+}
+
+function resumeState() {
+  const qs = loadQueryString();
+  if (qs.party) {
+    selectPartyChoice.setChoiceByValue([qs.party]);
+  }
 }
 
 createMap();
