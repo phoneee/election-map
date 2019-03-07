@@ -294,7 +294,7 @@ function createMap() {
     map.addSource('thaielection2562', {
       type: 'vector',
       tiles: [
-        `${hostname}/build/vt/thaielection2562/{z}/{x}/{y}.pbf`
+        `${map_hostname}/build/vt/thaielection2562/{z}/{x}/{y}.pbf`
       ],
       maxzoom: 14
     });

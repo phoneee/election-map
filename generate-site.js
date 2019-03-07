@@ -20,7 +20,8 @@ const meta = {
   title: 'พรรคไหนส่งผู้สมัครเขตไหนบ้าง?',
   description: 'พรรคไหน ส่งผู้สมัครเขตไหนบ้าง? เช็คข้อมูลกันได้ที่นี่',
   keywords: 'การเมือง, เลือกตั้ง, ประชาธิปไตย, การเมืองไทย, election, politics, democracy, thai politics, visualization, infographic, interactive, data journalism',
-  hostname: HOSTNAME
+  hostname: HOSTNAME,
+  map_hostname: 'https://rapee.github.io/election-map'
 };
 
 let output
