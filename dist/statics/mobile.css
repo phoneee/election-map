@@ -67,6 +67,10 @@
     color: #000000;
   }
 
+  #ui-panel .choices .choices__list--dropdown .choices__list {
+    max-height: 225px;
+  }
+
   #party-summary {
     margin: 0 0 10px;
   }
