@@ -53,7 +53,7 @@ function setHistoryState(params = {}) {
 
 function loadShareURL(partyName) {
   if (partyName) {
-    return location.origin + '/p/' + partyName + '.html' + location.search;
+    return `${hostname}/p/${partyName}.html${location.search}`;
   }
   return document.URL;
 }
