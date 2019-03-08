@@ -404,6 +404,9 @@ function createMap() {
   // Add zoom and rotation controls to the map.
   map.addControl(new mapboxgl.NavigationControl());
 
+  // disable map rotation using touch rotation gesture
+  map.touchZoomRotate.disableRotation();
+
   map.on('zoomend', function () {
     setHistoryState({
       c: map.getCenter().toArray().map(num => +num.toFixed(6)),
