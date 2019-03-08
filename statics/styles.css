@@ -91,12 +91,25 @@ body {
 
 #map .mapboxgl-popup {
   font-family: 'Noto Sans Thai', sans-serif;
+  max-width: 240px;
 }
 
 #map .mapboxgl-popup h4 {
   font-size: 16px;
   font-weight: bold;
   line-height: 1;
+}
+
+#map .mapboxgl-popup .name {
+  font-size: 14px;
+  line-height: 1.2
+}
+
+#map .mapboxgl-popup .detail {
+  line-height: 1.2;
+  font-size: 10px;
+  color: #747474;
+  margin-top: 5px;
 }
 
 #map .mapboxgl-ctrl-top-right {
@@ -219,7 +232,7 @@ body {
 
 #party-howto {
   display: block;
-  color: #9B9B9B;
+  text-shadow: 0 1px rgba(255,255,255,.7);
 }
 .show-party.show-district #party-howto {
   display: none;
