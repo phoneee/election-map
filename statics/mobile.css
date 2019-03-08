@@ -17,6 +17,10 @@
     font-size: 35px;
   }
 
+  #ui-container h2 span {
+    display: block;
+  }
+
   #party-select {
     color: #F0324B;
     background: #ffffff;
@@ -78,6 +82,7 @@
   #ui-panel {
     width: 90vw;
     left: 5vw;
+    padding-top: 60px;
   }
 
   #ui-panel,
