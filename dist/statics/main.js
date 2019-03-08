@@ -120,30 +120,12 @@ async function hilightByParty(partyName) {
   const candidates = await fetchAsync(`./data/parties/${partyName}.json`);
   let partyInfo = partyList.filter(p => p.name === partyName);
   if (partyInfo) partyInfo = partyInfo[0];
-  // const featureList = candidates.map(candidate => {
-  //   // hilight by feature ID
-  //   const featureId = `${candidate.province_name}-${candidate.zone_number}`;
-  //   // customPbfLayer.setFeatureStyle(featureId, {
-  //   //   ...PARTY_STYLE,
-  //   //   color: partyInfo.color || PARTY_STYLE.color,
-  //   //   fillColor: partyInfo.color || PARTY_STYLE.fillColor
-  //   // });
-  //   return featureId;
-  // });
-  // const featureList = candidates.map(d => d.fid);
-
   if (candidates && candidates.length > 0) {
     map.setPaintProperty('election-district-party', 'fill-color', partyInfo.color);
     map.setPaintProperty('election-district-party', 'fill-outline-color', lightenDarkenColor(partyInfo.color, -20));
     // map.setPaintProperty('election-district', 'line-color', lightenDarkenColor(partyInfo.color, -20));
-    map.setFilter('election-district-party', [
-      'any',
-      ...candidates.map(c => ([
-        'all',
-        ['==', 'province', c.province_name],
-        ['==', 'zone_num', c.zone_number],
-      ]))
-    ]);
+    const filter = ['in', 'fid'].concat(candidates.map(c => `${c.province_name}-${c.zone_number}`));
+    map.setFilter('election-district-party', filter);
   }
 
   return candidates;
@@ -479,7 +461,9 @@ function createMap() {
     const coordinates = e.lngLat;
     // const coordinates = e.features[0]._geometry.coordinates.slice();
     const district = e.features[0].properties;
-    const description = `<h4>${district.province}</h4>เขตเลือกตั้งที่ ${district.zone_num}`;
+    const description = `<h4>${district.province}</h4>`
+      + `<div class="name">เขตเลือกตั้งที่ ${district.zone_num}</div>`
+      + `<div class="detail">พื้นที่ ${district.detail}</div>`;
     // Populate the popup and set its coordinates
     // based on the feature found.
     popup.setLngLat(coordinates)
