@@ -1,3 +1,12 @@
+/**
+ * # How to generate site
+ * npm i handlebars
+ * # host on github.io
+ * HOSTNAME=https://rapee.github.io/election-map node generate-site.js
+ * # production build
+ * HOSTNAME=https://elect.in.th/election-map node generate-site.js
+ */
+
 const hbs = require('handlebars');
 const fs = require('fs');
 
