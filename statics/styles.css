@@ -164,11 +164,18 @@ body {
 
 .show-party #ui-panel {
   width: 360px;
-  left: 55%;
-  left: calc(50% + 40px);
+  left: initial;
+  right: 2%;
 
   max-width: 400px;
   margin: 0 auto 0 0;
+}
+
+@media only screen and (min-width: 1024px) {
+  .show-party #ui-panel {
+    left: initial;
+    right: 10%;
+  }
 }
 
 #ui-panel h2 {
