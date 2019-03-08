@@ -18,7 +18,7 @@
     <meta property="og:title" content="{{ title }}">
     <meta property="og:type" content="article">
     <meta property="og:image" content="{{ hostname }}/statics/party-share/{{ party }}.png">
-    <meta property="og:url" content="{{ hostname }}">
+    <meta property="og:url" content="{{ hostname }}/p/{{ party }}.html">
     <meta property="og:description" content="{{ description }}">
 
     <!-- for Twitter -->
@@ -30,7 +30,9 @@
 </head>
 <body>
     <script>
-      location.href = '{{ hostname }}' + location.search;
+      setTimeout(function() {
+        location.href = '{{ hostname }}' + location.search;
+      }, 500);
     </script>
 </body>
 </html>
