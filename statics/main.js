@@ -156,8 +156,8 @@ function selectDistrict(feature) {
   hilight = feature;
   const hilightId = getFeatureId(feature);
 
-  // map.setPaintProperty('election-district-hilight', 'fill-color', partyInfo && partyInfo.hilightColor || HILIGHT_STYLE.fillColor);
-  map.setPaintProperty('election-district-hilight', 'fill-color', HILIGHT_STYLE.fillColor);
+  map.setPaintProperty('election-district-hilight', 'fill-color', partyInfo && partyInfo.hilightColor || HILIGHT_STYLE.fillColor);
+  // map.setPaintProperty('election-district-hilight', 'fill-color', HILIGHT_STYLE.fillColor);
   map.setFilter('election-district-hilight', ['==', 'fid', feature.properties.fid]);
 
   document.getElementById('app').classList.add('show-district');
