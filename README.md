@@ -2,26 +2,29 @@
 
 ## Build
 
-Generate vector tile files in ProtoBuf (.pbf) in `/build/vectortile`. Zoom level can be changed by setting **MAX_ZOOM** in `scripts/build-geojson.js` variable (default: 14).
+Generate vector tile files in ProtoBuf (.pbf) in `/build/vt/*` using [tippecanoe](https://github.com/mapbox/tippecanoe). Because we build map as static files, no geospatial server is needed.
 
 ```bash
-npm i
-npm run build
+mkdir -p dist/build/vt/
+tippecanoe -e dist/build/vt/thaielection2562 --no-tile-compression thaielection2562.geojson
+tippecanoe -e dist/build/vt/province --no-tile-compression province.geojson
 ```
 
-## Demo
+Next we need to generate static site. Choose target hostname by setting environment variable `HOSTNAME=`. Edit map vector tile hostname (`map_hostname`) in `generate-site.js`, i.e. `http://127.0.0.1:8080` if it's hosted on different website.
 
-Example map loads vector tile as static files, no spatial server is needed.
+```bash
+npm i handlebars
 
-Launch a local web server from this directory. For example if we run `http-server` at port 8080, browse to `http://127.0.0.1:8080/index.html`.
+HOSTNAME=http://localhost:8080 node generate-site.js
+```
+
+## Development
+
+Launch a local web server from this directory. For example if we run `http-server`.
 
 ```bash
 npm i -g http-server
 http-server dist/
 ```
 
-Link `build/` inside `dist/build` by running:
-
-```bash
-ln -s /path/to/election-map/build /path/to/election-map/dist/build
-```
+Then browse to `http://127.0.0.1:8080`.
