@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ title }}</title>
+
+    <meta content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi"
+        name="viewport">
+    <meta charset="utf-8" />
+
+    <!-- for Google -->
+    <meta name="description" content="{{ description }}">
+    <meta name="keywords" content="{{ keywords }}">
+    <meta name="author" content="elect.in.th">
+
+    <!-- for Facebook -->
+    <meta property="fb:app_id" content="{{ fb_app_id }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="{{ hostname }}/statics/party-share/{{ party }}.png">
+    <meta property="og:url" content="{{ hostname }}">
+    <meta property="og:description" content="{{ description }}">
+
+    <!-- for Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ hostname }}/statics/party-share/{{ party }}.png">
+
+</head>
+<body>
+    <script>
+      location.href = '{{ hostname }}' + location.search;
+    </script>
+</body>
+</html>

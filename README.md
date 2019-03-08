@@ -17,5 +17,11 @@ Launch a local web server from this directory. For example if we run `http-serve
 
 ```bash
 npm i -g http-server
-http-server .
+http-server dist/
+```
+
+Link `build/` inside `dist/build` by running:
+
+```bash
+ln -s /path/to/election-map/build /path/to/election-map/dist/build
 ```

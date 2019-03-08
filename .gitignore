@@ -1,4 +1,5 @@
-.vscode/
-node_modules/
-thaielectshp2019_v2.geojson
+.DS_Store
+.vscode
+node_modules
+build
 package-lock.json

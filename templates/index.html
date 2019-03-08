@@ -2,30 +2,30 @@
 <html>
 
 <head>
-    <title>พรรคไหนส่งผู้สมัครเขตไหนบ้าง?</title>
+    <title>{{ title }}</title>
 
     <meta content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi"
         name="viewport">
     <meta charset="utf-8" />
 
     <!-- for Google -->
-    <meta name="description" content="เช็คข้อมูลกันได้ที่นี่ เปรียบเทียบพรรคชนพรรค">
-    <meta name="keywords" content="การเมือง, เลือกตั้ง, ประชาธิปไตย, การเมืองไทย, election, politics, democracy, thai politics, visualization, infographic, interactive, data journalism">
+    <meta name="description" content="{{ description }}">
+    <meta name="keywords" content="{{ keywords }}">
     <meta name="author" content="elect.in.th">
 
     <!-- for Facebook -->
-    <meta property="fb:app_id" content="171048360504115">
-    <meta property="og:title" content="พรรคไหนส่งผู้สมัครเขตไหนบ้าง?">
+    <meta property="fb:app_id" content="{{ fb_app_id }}">
+    <meta property="og:title" content="{{ title }}">
     <meta property="og:type" content="article">
-    <meta property="og:image" content="https://rapee.github.io/election-map/statics/cover-map.png">
-    <meta property="og:url" content="https://rapee.github.io/election-map">
-    <meta property="og:description" content="เช็คข้อมูลกันได้ที่นี่ เปรียบเทียบพรรคชนพรรค">
+    <meta property="og:image" content="{{ hostname }}/statics/cover-map.png">
+    <meta property="og:url" content="{{ hostname }}">
+    <meta property="og:description" content="{{ description }}">
 
     <!-- for Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="พรรคไหนส่งผู้สมัครเขตไหนบ้าง?">
-    <meta name="twitter:description" content="เช็คข้อมูลกันได้ที่นี่ เปรียบเทียบพรรคชนพรรค">
-    <meta name="twitter:image" content="https://rapee.github.io/election-map/statics/cover-map.png">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ hostname }}/statics/cover-map.png">
 
     <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
@@ -40,13 +40,13 @@
     <link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43653558-19"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga_id }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'UA-43653558-19');
+        gtag('config', '{{ ga_id }}');
     </script>
     <!-- Facebook Pixel Code -->
     <script>
@@ -58,11 +58,11 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1867967129974391');
+        fbq('init', '{{ fb_pixel_id }}');
         fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=1867967129974391&ev=PageView&noscript=1"
+        src="https://www.facebook.com/tr?id={{ fb_pixel_id }}&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Facebook Pixel Code -->
 </head>
@@ -121,7 +121,7 @@
     <script>
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '171048360504115',
+                appId: '{{ fb_app_id }}',
                 autoLogAppEvents: true,
                 xfbml: true,
                 version: 'v3.2'
@@ -139,9 +139,9 @@
         }(document, 'script', 'facebook-jssdk'));
     </script>
     <script type="text/javascript">
-        var hostname = 'https://rapee.github.io/election-map';
-        var map_hostname = 'https://rapee.github.io/election-map';
-        mapboxgl.accessToken = 'pk.eyJ1IjoibGJ1ZCIsImEiOiJCVTZFMlRRIn0.0ZQ4d9-WZrekVy7ML89P4A';
+        var hostname = '{{ hostname }}';
+        var map_hostname = '{{ map_hostname }}';
+        mapboxgl.accessToken = '{{ mapbox_token }}';
     </script>
     <script type="text/javascript" src="statics/main.js"></script>
 </body>
