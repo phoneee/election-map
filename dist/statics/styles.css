@@ -1,115 +1,102 @@
 html,
 body {
-  font-family: 'Noto Sans Thai', sans-serif;
+    font-family: 'Noto Sans Thai', sans-serif;
 }
 
 .dev-banner {
-  position: relative;
-  background: red;
-  color: white;
-  text-align: center;
+    position: relative;
+    background: red;
+    color: white;
+    text-align: center;
 }
 
 a,
 a:hover,
 a:visited {
-  color: black;
-  text-decoration: none;
+    color: black;
+    text-decoration: none;
 }
 
 .clear {
-  clear: both;
+    clear: both;
 }
 
 h1,
 h2,
 h3 {
-  font-family: 'Libre Baskerville', 'The Matter', serif;
+    font-family: 'Libre Baskerville', 'The Matter', serif;
 }
 
 h1.title {
-  text-align: center;
-  font-size: 44px;
-  font-weight: 700;
-  margin-bottom: 10px;
+    text-align: center;
+    font-size: 44px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
 .header-img {
-  display: block;
-  width: 20%;
-  margin: auto;
+    display: block;
+    width: 20%;
+    margin: auto;
 }
 
 .note {
-  text-align: center;
+    text-align: center;
 }
 
 body {
-  margin: 0;
-  background-color: #ffffff;
+    margin: 0;
+    background-color: #ffffff;
 }
 
 #app {
-  position: relative;
-  background-color: #e1e1e2;
+    position: relative;
+    background-color: #e1e1e2;
 }
 
 #app.show-party {
-  background-color: #ffffff;
+    background-color: #ffffff;
 }
 
 .navbar-brand {
-  display: block;
-  font-size: 1.25rem;
-  line-height: inherit;
-  margin-right: 1rem;
-  white-space: nowrap;
-  position: absolute;
-  z-index: 10;
-  top: 6px;
-  left: 16px;
+    display: block;
+    font-size: 1.25rem;
+    line-height: inherit;
+    margin-right: 1rem;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 10;
+    top: 6px;
+    left: 16px;
 }
 
 .navbar-brand img {
-  width: 100%;
-  max-width: 150px;
+    width: 100%;
+    max-width: 150px;
 }
 
 .navbar-brand h6 {
-  color: #4a4a4a;
-  font-size: 0.75rem;
-  margin-top: 10px;
-  text-shadow: 0 1px rgba(255,255,255,.7);
+    color: #4a4a4a;
+    font-size: 0.75rem;
+    margin-top: 10px;
+    text-shadow: 0 1px rgba(255,255,255,.7);
 }
 
 #map {
-  width: 100vw;
-  height: 100vh;
-  z-index: 1 ;
-  background: none;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1 ;
+    background: none;
 }
 
 #map .mapboxgl-popup {
-  font-family: 'Noto Sans Thai', sans-serif;
-  max-width: 240px;
+    font-family: 'Noto Sans Thai', sans-serif;
 }
 
 #map .mapboxgl-popup h4 {
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 1;
-}
-
-#map .mapboxgl-popup .name {
-  font-size: 14px;
-  line-height: 1.2
-}
-
-#map .mapboxgl-popup .detail {
-  line-height: 1.2;
-  font-size: 10px;
-  color: #747474;
-  margin-top: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
 }
 
 #map .mapboxgl-ctrl-top-right {
@@ -131,64 +118,57 @@ body {
 }
 
 .ui {
-  pointer-events: initial;
+    pointer-events: initial;
 }
 
 #ui-panel {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 40px;
-  padding: 100px 0 0;
-  /* background: rgba(255, 255, 255, 0.6); */
-  z-index: 10;
-  pointer-events: none;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 40px;
+    padding: 100px 0 0;
+    /* background: rgba(255, 255, 255, 0.6); */
+    z-index: 10;
+    pointer-events: none;
 
-  max-width: 600px;
-  margin: 0 auto;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 #ui-container {
-  text-align: center;
+    text-align: center;
 }
 
 .show-party #ui-container {
-  background: #ffffff;
-  padding: 15px 30px;
-  box-shadow: 0 2px 4px 0 #C3C3C3;
-  text-align: left;
-  border-radius: 12px;
+    background: #ffffff;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px 0 #C3C3C3;
+    text-align: left;
+    border-radius: 12px;
 }
 
 .show-party #ui-panel {
-  width: 360px;
-  left: initial;
-  right: 2%;
+    width: 360px;
+    left: 55%;
+    left: calc(50% + 40px);
 
-  max-width: 400px;
-  margin: 0 auto 0 0;
-}
-
-@media only screen and (min-width: 1024px) {
-  .show-party #ui-panel {
-    left: initial;
-    right: 10%;
-  }
+    max-width: 400px;
+    margin: 0 auto 0 0;
 }
 
 #ui-panel h2 {
-  font-size: 45px;
-  text-shadow: 0 1px rgba(255,255,255,.7);
+    font-size: 45px;
+    text-shadow: 0 1px rgba(255,255,255,.7);
 }
 
 .show-party #ui-panel h2 {
-  font-size: 21px;
+    font-size: 21px;
 }
 
 #ui-panel {
-  font-size: 18px;
+    font-size: 18px;
 }
 
 #ui-panel .choices {
@@ -222,42 +202,42 @@ body {
 }
 
 #party-select {
-  width: 80%;
-  max-width: 400px;
-  margin-top: 20px;
+    width: 80%;
+    max-width: 400px;
+    margin-top: 20px;
 }
 
 .show-party #party-select {
-  width: 100%;
-  margin-top: 0;
+    width: 100%;
+    margin-top: 0;
 }
 
 #party-summary {
-  margin: 20px 0;
-  text-decoration: none;
+    margin: 20px 0;
+    text-decoration: underline;
 }
 
 #party-howto {
-  display: block;
-  text-shadow: 0 1px rgba(255,255,255,.7);
+    display: block;
+    color: #9B9B9B;
 }
 .show-party.show-district #party-howto {
-  display: none;
+    display: none;
 }
 
 #district-info {
-  display: none;
+    display: none;
 }
 .show-party.show-district #district-info {
-  display: block;
+    display: block;
 }
 
 #district-name {
-  font-size: 18px;
-  font-weight: bold;
+    font-size: 18px;
+    font-weight: bold;
 }
 #district-candidate {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 #district-link {
@@ -280,42 +260,42 @@ body {
 
 
 .share-menu {
-  margin-top: 40px;
-  padding-top: 10px;
-  border-top: 1px solid #E1E1E2;
-  color: #F0324B;
-  font-family: sans-serif;
-  text-align: center;
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 1px solid #E1E1E2;
+    color: #F0324B;
+    font-family: sans-serif;
+    text-align: center;
 }
 
 .share-menu .label {
-  line-height: 35px;
-  margin-right: 10px;
-  font-weight: normal;
-  font-size: 13px;
+    line-height: 35px;
+    margin-right: 10px;
+    font-weight: normal;
+    font-size: 13px;
 }
 
 .share-menu .share-button {
-  vertical-align: middle;
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  color: white;
-  background: #F0324B;
-  border-radius: 17.5px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    color: white;
+    background: #F0324B;
+    border-radius: 17.5px;
 }
 
 .share-menu .share-button i {
-  line-height: 35px;
+    line-height: 35px;
 }
 
 #ui-panel .footer {
-  font-family: 'Libre Baskerville', 'The Matter', sans-serif;
-  text-align: center;
-  font-size: 10px;
-  margin-top: 40px;
+    font-family: 'Libre Baskerville', 'The Matter', sans-serif;
+    text-align: center;
+    font-size: 10px;
+    margin-top: 40px;
 }
 
 #ui-panel .footer a {
-  text-decoration: underline;
+    text-decoration: underline;
 }
