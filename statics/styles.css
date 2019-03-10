@@ -193,6 +193,7 @@ body {
 
 #ui-panel .choices {
   pointer-events: initial;
+  margin-bottom: 10px;
 }
 
 #ui-panel .choices .choices__inner {
@@ -206,13 +207,14 @@ body {
 #ui-panel .choices .choices__list--single .choices__item {
   padding: 0;
   color: #f0324b;
+  font-size: 16px;
 }
 
 #ui-panel .choices .choices__item {
   text-align: left;
   color: #000000;
   padding: 4px 10px;
-  font-size: 16px;
+  font-size: 14px;
   font-family: 'Noto Sans Thai', sans-serif;
 }
 
@@ -233,7 +235,7 @@ body {
 }
 
 #party-summary {
-  margin: 20px 0;
+  margin: 10px 0 20px;
   text-decoration: none;
 }
 
@@ -258,6 +260,18 @@ body {
 }
 #district-candidate {
   margin-bottom: 20px;
+}
+#ui-panel .candidate-number {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid #f0324b;
+  color: #f0324b;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Noto Sans Thai', sans-serif;
+  line-height: 22px;
 }
 
 #district-link {
@@ -318,4 +332,16 @@ body {
 
 #ui-panel .footer a {
   text-decoration: underline;
+}
+
+#district-other-parties {
+  margin-bottom: 10px;
+}
+
+.logo {
+  margin: 1px;
+}
+
+.logo img {
+  width: 25px;
 }

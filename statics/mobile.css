@@ -43,11 +43,13 @@
     right: 10px;
     margin: 0;
     width: 60vw;
+    min-width: 220px;
     padding: 0;
-    bottom: 0;
+    bottom: 70px;
     top: initial;
-    height: 200px;
+    height: initial;
   }
+
   .show-party #ui-container {
     padding: 10px;
     box-shadow: none;
@@ -75,8 +77,12 @@
     max-height: 225px;
   }
 
-  #party-summary {
+  #ui-panel #party-summary {
+    font-size: 16px;
     margin: 0 0 10px;
+  }
+  #ui-panel #district-candidate {
+    font-size: 16px;
   }
 
   #ui-panel {
@@ -92,10 +98,12 @@
 
   #district-name {
     font-size: 12px;
+    margin-bottom: 0;
   }
 
   #district-candidate {
     margin-bottom: 10px;
+    font-size: 16px;
   }
 
   #district-link {
@@ -136,6 +144,13 @@
   }
 
   #ui-panel .footer {
+    display: none;
+  }
+}
+
+
+@media only screen and (max-width: 520px) {
+  #ui-panel #district-other-parties {
     display: none;
   }
 }

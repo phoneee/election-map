@@ -84,6 +84,14 @@
                 <div id="district-info" class="ui">
                     <h4 id="district-name"></h4>
                     <div id="district-candidate"></div>
+                    <div id="district-other-parties">
+                        <b id="district-other-parties-header">พรรคอื่นที่มีผู้สมัครในเขตนี้ (<span id="count-other-parties"></span> พรรค)</b>
+                        <div id="district-other-parties-list">
+                            <a href="#">
+                                <img src="http://placehold.jp/30x30.png"/>
+                            </a>
+                        </div>
+                    </div>
                     <a id="district-link" href="" target="_blank">ดูประวัติและรายชื่อผู้สมัครอื่นในเขต</a>
                     <div id="share">
                         <div class="share-menu">
@@ -118,6 +126,8 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js@4/public/assets/scripts/choices.min.js"></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@4"></script>
     <script>
         window.fbAsyncInit = function () {
             FB.init({
