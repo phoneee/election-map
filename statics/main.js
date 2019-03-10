@@ -418,7 +418,16 @@ function createMap() {
   }
 
   // Add zoom and rotation controls to the map.
-  map.addControl(new mapboxgl.NavigationControl());
+  map.addControl(new mapboxgl.NavigationControl({
+    showCompass: false
+  }));
+
+  // Add geolocate control to the map.
+  map.addControl(new mapboxgl.GeolocateControl({
+    fitBoundsOptions: {
+      maxZoom: 12
+    }
+  }));
 
   // disable map rotation using touch rotation gesture
   map.touchZoomRotate.disableRotation();
