@@ -155,8 +155,10 @@ function selectDistrict(feature) {
 
   hilight = feature;
   const hilightId = getFeatureId(feature);
+  const partyColor = partyInfo && partyInfo.color;
 
-  map.setPaintProperty('election-district-hilight', 'fill-color', partyInfo && partyInfo.hilightColor || HILIGHT_STYLE.fillColor);
+  map.setPaintProperty('election-district-hilight', 'fill-color', partyColor || HILIGHT_STYLE.fillColor);
+  // map.setPaintProperty('election-district-hilight', 'fill-color', partyInfo && partyInfo.hilightColor || HILIGHT_STYLE.fillColor);
   // map.setPaintProperty('election-district-hilight', 'fill-color', HILIGHT_STYLE.fillColor);
   map.setFilter('election-district-hilight', ['==', 'fid', feature.properties.fid]);
 
@@ -166,7 +168,7 @@ function selectDistrict(feature) {
 
   const selectedCandidate = partyFeatureList.filter(f => `${f.province_name}-${f.zone_number}` === hilightId)[0];
   if (selectedCandidate) {
-    document.getElementById('district-candidate').innerHTML = `${selectedCandidate.Title} ${selectedCandidate.FirstName} ${selectedCandidate.LastName}`;
+    document.getElementById('district-candidate').innerHTML = `<span class="candidate-number">${selectedCandidate.CandidateNo}</span> ${selectedCandidate.Title} ${selectedCandidate.FirstName} ${selectedCandidate.LastName}`;
   } else {
     document.getElementById('district-candidate').innerHTML = 'ไม่มีผู้สมัครลงในเขตเลือกตั้งนี้';
   }
@@ -175,7 +177,7 @@ function selectDistrict(feature) {
   const countOtherParties = otherParties.length
 
   document.getElementById('district-other-parties-list').innerHTML = otherParties.map(a => {
-    const code = `selectPartyChoice.setChoiceByValue(['${a}']);`
+    const code = `selectPartyChoice.setChoiceByValue(['${a}']);`;
     return `<a class="logo" data-tippy-content="${a}" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.png"/></a>`
   }).join('');
   tippy('[data-tippy-content]');
@@ -347,7 +349,7 @@ function createMap() {
       paint: {
         'fill-outline-color': '#484896',
         'fill-color': '#6e599f',
-        'fill-opacity': 0.7
+        'fill-opacity': 0.2
       },
       filter: ['==', 'fid', '']
     });
@@ -360,7 +362,7 @@ function createMap() {
       paint: {
         'fill-outline-color': '#484896',
         'fill-color': '#6e599f',
-        'fill-opacity': 0.7
+        'fill-opacity': 0.6
       },
       filter: ['==', 'fid', '']
     });
