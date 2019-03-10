@@ -176,9 +176,9 @@ function selectDistrict(feature) {
 
   document.getElementById('district-other-parties-list').innerHTML = otherParties.map(a => {
     const code = `selectPartyChoice.setChoiceByValue(['${a}']);`
-    console.log
-    return `<a class="logo" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.png"/></a>`
+    return `<a class="logo" data-tippy-content="${a}" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.png"/></a>`
   }).join('');
+  tippy('[data-tippy-content]');
 
   document.getElementById('count-other-parties').innerHTML = countOtherParties;
 }
