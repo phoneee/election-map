@@ -319,3 +319,15 @@ body {
 #ui-panel .footer a {
   text-decoration: underline;
 }
+
+#district-other-parties {
+  margin-bottom: 10px;
+}
+
+.logo {
+  margin: 1px;
+}
+
+.logo img {
+  width: 25px;
+}
