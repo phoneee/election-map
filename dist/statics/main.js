@@ -178,7 +178,7 @@ function selectDistrict(feature) {
   }
 
   if (zone2Parties) {
-    const otherParties = zone2Parties[feature.properties.fid].filter( p => p != partyInfo.name)
+    const otherParties = zone2Parties[feature.properties.fid].filter(p => p != partyInfo.name)
     const countOtherParties = otherParties.length
 
     document.getElementById('district-other-parties-list').innerHTML = otherParties.map(a => {
@@ -474,8 +474,18 @@ function createMap() {
 
   // handle click or touch device
   if (isTouchDevice()) {
+    let touchMoved;
+    map.on('touchstart', function(e) {
+      touchMoved = false;
+    });
+    map.on('touchmove', function(e) {
+      touchMoved = true;
+    });
     map.on('touchend', function(e) {
-      tapEvent(e);
+      if (!touchMoved && e.points.length === 1) {
+        tapEvent(e);
+      }
+      touchMoved = false;
     });
   } else {
     map.on('click', function(e) {
