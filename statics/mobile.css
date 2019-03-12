@@ -31,12 +31,8 @@
   #map .mapboxgl-ctrl-top-right {
     top: initial;
     bottom: 0;
+    margin-bottom: 70px;
   }
-
-  #map .mapboxgl-ctrl-top-right .mapboxgl-ctrl {
-    margin: 0 0 70px 15px;
-  }
-
 
   .show-party #ui-panel {
     left: initial;
@@ -98,7 +94,6 @@
 
   #district-name {
     font-size: 12px;
-    margin-bottom: 0;
   }
 
   #district-candidate {

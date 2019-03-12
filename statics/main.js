@@ -47,13 +47,17 @@ function setHistoryState(params = {}) {
   // set page state
   if (history) {
     const state = Object.assign(loadQueryString(), params);
-    history.pushState (state, selectedPartyName, '?' + createQueryString(state));
+    delete state.party;
+    const url = selectedPartyName
+      ? `${hostname}/${selectedPartyName}.html`
+      : `${hostname}`;
+    history.pushState(state, selectedPartyName, `${url}?${createQueryString(state)}`);
   }
 }
 
 function loadShareURL(partyName) {
   if (partyName) {
-    return `${hostname}/p/${partyName}.html${location.search}`;
+    return `${hostname}/${partyName}.html${location.search}`;
   }
   return document.URL;
 }
@@ -119,7 +123,7 @@ function getFeatureId(feature) {
 async function hilightByParty(partyName) {
   const candidates = await fetchAsync(`./data/parties/${partyName}.json`);
   let partyInfo = partyList.filter(p => p.name === partyName);
-  if (partyInfo) partyInfo = partyInfo[0];
+  if (partyInfo.length > 0) partyInfo = partyInfo[0];
   if (candidates && candidates.length > 0) {
     map.setPaintProperty('election-district-party', 'fill-color', partyInfo.color);
     map.setPaintProperty('election-district-party', 'fill-outline-color', lightenDarkenColor(partyInfo.color, -20));
@@ -151,7 +155,7 @@ function selectDistrict(feature) {
   ;
 
   let partyInfo = partyList.filter(p => p.name === selectedPartyName);
-  if (partyInfo) partyInfo = partyInfo[0];
+  if (partyInfo.length > 0) partyInfo = partyInfo[0];
 
   hilight = feature;
   const hilightId = getFeatureId(feature);
@@ -173,16 +177,18 @@ function selectDistrict(feature) {
     document.getElementById('district-candidate').innerHTML = 'ไม่มีผู้สมัครลงในเขตเลือกตั้งนี้';
   }
 
-  const otherParties = zone2Parties[feature.properties.fid].filter( p => p != partyInfo.name)
-  const countOtherParties = otherParties.length
+  if (zone2Parties) {
+    const otherParties = zone2Parties[feature.properties.fid].filter(p => p != partyInfo.name)
+    const countOtherParties = otherParties.length
 
-  document.getElementById('district-other-parties-list').innerHTML = otherParties.map(a => {
-    const code = `selectPartyChoice.setChoiceByValue(['${a}']);`;
-    return `<a class="logo" data-tippy-content="${a}" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.png"/></a>`
-  }).join('');
-  tippy('[data-tippy-content]');
+    document.getElementById('district-other-parties-list').innerHTML = otherParties.map(a => {
+      const code = `selectPartyChoice.setChoiceByValue(['${a}']);`;
+      return `<a class="logo" data-tippy-content="${a}" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.png"/></a>`
+    }).join('');
+    tippy('[data-tippy-content]');
 
-  document.getElementById('count-other-parties').innerHTML = countOtherParties;
+    document.getElementById('count-other-parties').innerHTML = countOtherParties;
+  }
 }
 
 // List of all parties and its color
@@ -281,13 +287,13 @@ const vectorTileStyling = {
 function createMap() {
   map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/light-v9',
+    style: 'https://tile.i-bitz.co.th/styles/SDS/style.json',
     center: mapFullPageCenter,
     maxZoom: 16,
     // maxBounds: maxBounds
   });
 
-  map.on('load', function() {
+  map.on('load', async function() {
     // source data: thaielection2562
     map.addSource('thaielection2562', {
       type: 'vector',
@@ -402,6 +408,8 @@ function createMap() {
       }
     });
 
+    await setupParty();
+
     resumeState();
   });
 
@@ -466,8 +474,18 @@ function createMap() {
 
   // handle click or touch device
   if (isTouchDevice()) {
+    let touchMoved;
+    map.on('touchstart', function(e) {
+      touchMoved = false;
+    });
+    map.on('touchmove', function(e) {
+      touchMoved = true;
+    });
     map.on('touchend', function(e) {
-      tapEvent(e);
+      if (!touchMoved && e.points.length === 1) {
+        tapEvent(e);
+      }
+      touchMoved = false;
     });
   } else {
     map.on('click', function(e) {
@@ -600,8 +618,6 @@ async function setupParty() {
   });
   selectParty.innerHTML = options.join('\n');
 
-  zone2Parties = await fetchAsync(`./data/zone-to-parties.json`);
-
   // setup searchable dropdown
   selectPartyChoice = new Choices(selectParty, {
     searchResultLimit: 500,
@@ -650,7 +666,6 @@ async function setupParty() {
   });
 
   // UI interactions
-  // selectParty.onchange = async function () {s
   selectParty.addEventListener('addItem', async function(e) {
     // First time user select a party
     if (!selectedPartyName) {
@@ -673,7 +688,7 @@ async function setupParty() {
 
     selectDistrict(hilight);
 
-    setHistoryState({ party: selectedPartyName });
+    setHistoryState();
 
     // track event
     gtag('event', 'select_party', {
@@ -687,6 +702,9 @@ async function setupParty() {
       value: 1
     });
   });
+
+  // load zone-party mapping data
+  zone2Parties = await fetchAsync(`./data/zone-to-parties.json`);
 }
 
 function resumeState() {
@@ -699,5 +717,3 @@ function resumeState() {
 createMap();
 
 setupShare();
-
-setupParty();
