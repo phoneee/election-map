@@ -183,7 +183,7 @@ function selectDistrict(feature) {
 
     document.getElementById('district-other-parties-list').innerHTML = otherParties.map(a => {
       const code = `selectPartyChoice.setChoiceByValue(['${a}']);`;
-      return `<a class="logo" data-tippy-content="${a}" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.png"/></a>`
+      return `<a class="logo" data-tippy-content="${a}" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.jpg"/></a>`
     }).join('');
     tippy('[data-tippy-content]');
 
@@ -300,7 +300,7 @@ function createMap() {
       tiles: [
         `${map_hostname}/build/vt/thaielection2562/{z}/{x}/{y}.pbf`
       ],
-      maxzoom: 14
+      maxzoom: 10
     });
     // source data: province
     map.addSource('province', {
@@ -308,7 +308,7 @@ function createMap() {
       tiles: [
         `${map_hostname}/build/vt/province/{z}/{x}/{y}.pbf`
       ],
-      maxzoom: 14
+      maxzoom: 10
     });
     // interactive layer
     map.addLayer({
@@ -641,7 +641,7 @@ async function setupParty() {
               data-value="'+ String(data.value) + '"\
               '+ String(data.active ? 'aria-selected="true"' : '') + '\
               '+ String(data.disabled ? 'aria-disabled="true"' : '') + '\
-              >' + (data.value ? '<img src="' + hostname + '/statics/party-logos/' + data.value + '.png" style="margin-right:10px;" />' : '') + '\
+              >' + (data.value ? '<img src="' + hostname + '/statics/party-logos/' + data.value + '.jpg" style="margin-right:10px;" />' : '') + '\
               ' + String(data.value || 'เลือกพรรค') + '\
             </div>\
           ');
@@ -656,7 +656,7 @@ async function setupParty() {
               data-id="'+ String(data.id) + '"\
               data-value="'+ String(data.value) + '"\
               '+ String(data.groupId > 0 ? 'role="treeitem"' : 'role="option"') + '\
-              >' + (data.value ? '<img src="' + hostname + '/statics/party-logos/' + data.value + '.png" style="margin-right:10px;" />' : '') + '\
+              >' + (data.value ? '<img src="' + hostname + '/statics/party-logos/' + data.value + '.jpg" style="margin-right:10px;" />' : '') + '\
               ' + String(data.label) + '\
             </div>\
           ');
