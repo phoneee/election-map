@@ -300,7 +300,7 @@ function createMap() {
       tiles: [
         `${map_hostname}/build/vt/thaielection2562/{z}/{x}/{y}.pbf`
       ],
-      maxzoom: 14
+      maxzoom: 10
     });
     // source data: province
     map.addSource('province', {
@@ -308,7 +308,7 @@ function createMap() {
       tiles: [
         `${map_hostname}/build/vt/province/{z}/{x}/{y}.pbf`
       ],
-      maxzoom: 14
+      maxzoom: 10
     });
     // interactive layer
     map.addLayer({
