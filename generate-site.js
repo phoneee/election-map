@@ -20,6 +20,7 @@ const partyList = JSON.parse(partySource);
 const HOSTNAME = process.env.ENV === 'production'
   ? 'https://elect.in.th/election-map'
   : (process.env.HOSTNAME || 'http://127.0.0.1:8080');
+const MAP_HOSTNAME = process.env.MAP_HOSTNAME || HOSTNAME;
 
 const meta = {
   fb_app_id: '171048360504115',
@@ -30,7 +31,7 @@ const meta = {
   description: 'เช็คข้อมูลกันได้ที่นี่ เปรียบเทียบพรรคชนพรรค',
   keywords: 'การเมือง, เลือกตั้ง, ประชาธิปไตย, การเมืองไทย, election, politics, democracy, thai politics, visualization, infographic, interactive, data journalism',
   hostname: HOSTNAME,
-  map_hostname: 'https://rapee.github.io/election-map'
+  map_hostname: MAP_HOSTNAME
 };
 
 let output
