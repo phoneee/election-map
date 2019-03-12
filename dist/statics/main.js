@@ -123,7 +123,7 @@ function getFeatureId(feature) {
 async function hilightByParty(partyName) {
   const candidates = await fetchAsync(`./data/parties/${partyName}.json`);
   let partyInfo = partyList.filter(p => p.name === partyName);
-  if (partyInfo) partyInfo = partyInfo[0];
+  if (partyInfo.length > 0) partyInfo = partyInfo[0];
   if (candidates && candidates.length > 0) {
     map.setPaintProperty('election-district-party', 'fill-color', partyInfo.color);
     map.setPaintProperty('election-district-party', 'fill-outline-color', lightenDarkenColor(partyInfo.color, -20));
@@ -155,7 +155,7 @@ function selectDistrict(feature) {
   ;
 
   let partyInfo = partyList.filter(p => p.name === selectedPartyName);
-  if (partyInfo) partyInfo = partyInfo[0];
+  if (partyInfo.length > 0) partyInfo = partyInfo[0];
 
   hilight = feature;
   const hilightId = getFeatureId(feature);
@@ -177,16 +177,18 @@ function selectDistrict(feature) {
     document.getElementById('district-candidate').innerHTML = 'ไม่มีผู้สมัครลงในเขตเลือกตั้งนี้';
   }
 
-  const otherParties = zone2Parties[feature.properties.fid].filter( p => p != partyInfo.name)
-  const countOtherParties = otherParties.length
+  if (zone2Parties) {
+    const otherParties = zone2Parties[feature.properties.fid].filter( p => p != partyInfo.name)
+    const countOtherParties = otherParties.length
 
-  document.getElementById('district-other-parties-list').innerHTML = otherParties.map(a => {
-    const code = `selectPartyChoice.setChoiceByValue(['${a}']);`;
-    return `<a class="logo" data-tippy-content="${a}" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.png"/></a>`
-  }).join('');
-  tippy('[data-tippy-content]');
+    document.getElementById('district-other-parties-list').innerHTML = otherParties.map(a => {
+      const code = `selectPartyChoice.setChoiceByValue(['${a}']);`;
+      return `<a class="logo" data-tippy-content="${a}" href="javascript: ${code}" title="${a}"><img src="${hostname}/statics/party-logos/${a}.png"/></a>`
+    }).join('');
+    tippy('[data-tippy-content]');
 
-  document.getElementById('count-other-parties').innerHTML = countOtherParties;
+    document.getElementById('count-other-parties').innerHTML = countOtherParties;
+  }
 }
 
 // List of all parties and its color
@@ -606,8 +608,6 @@ async function setupParty() {
   });
   selectParty.innerHTML = options.join('\n');
 
-  zone2Parties = await fetchAsync(`./data/zone-to-parties.json`);
-
   // setup searchable dropdown
   selectPartyChoice = new Choices(selectParty, {
     searchResultLimit: 500,
@@ -692,6 +692,9 @@ async function setupParty() {
       value: 1
     });
   });
+
+  // load zone-party mapping data
+  zone2Parties = await fetchAsync(`./data/zone-to-parties.json`);
 }
 
 function resumeState() {
