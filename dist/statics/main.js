@@ -281,7 +281,7 @@ const vectorTileStyling = {
 function createMap() {
   map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/light-v9',
+    style: 'https://tile.i-bitz.co.th/styles/SDS/style.json',
     center: mapFullPageCenter,
     maxZoom: 16,
     // maxBounds: maxBounds
