@@ -47,13 +47,17 @@ function setHistoryState(params = {}) {
   // set page state
   if (history) {
     const state = Object.assign(loadQueryString(), params);
-    history.pushState (state, selectedPartyName, '?' + createQueryString(state));
+    delete state.party;
+    const url = selectedPartyName
+      ? `${hostname}/${selectedPartyName}.html`
+      : `${hostname}`;
+    history.pushState(state, selectedPartyName, `${url}?${createQueryString(state)}`);
   }
 }
 
 function loadShareURL(partyName) {
   if (partyName) {
-    return `${hostname}/p/${partyName}.html${location.search}`;
+    return `${hostname}/${partyName}.html${location.search}`;
   }
   return document.URL;
 }
@@ -287,7 +291,7 @@ function createMap() {
     // maxBounds: maxBounds
   });
 
-  map.on('load', function() {
+  map.on('load', async function() {
     // source data: thaielection2562
     map.addSource('thaielection2562', {
       type: 'vector',
@@ -401,6 +405,8 @@ function createMap() {
         ]
       }
     });
+
+    await setupParty();
 
     resumeState();
   });
@@ -650,7 +656,6 @@ async function setupParty() {
   });
 
   // UI interactions
-  // selectParty.onchange = async function () {s
   selectParty.addEventListener('addItem', async function(e) {
     // First time user select a party
     if (!selectedPartyName) {
@@ -673,7 +678,7 @@ async function setupParty() {
 
     selectDistrict(hilight);
 
-    setHistoryState({ party: selectedPartyName });
+    setHistoryState();
 
     // track event
     gtag('event', 'select_party', {
@@ -699,5 +704,3 @@ function resumeState() {
 createMap();
 
 setupShare();
-
-setupParty();

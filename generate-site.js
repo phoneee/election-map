@@ -45,5 +45,5 @@ partyList.forEach(party => {
     party: party.name
   });
   output = template.share(data);
-  fs.writeFileSync(`./dist/p/${party.name}.html`, output, 'utf8');
+  fs.writeFileSync(`./dist/${party.name}.html`, output, 'utf8');
 });

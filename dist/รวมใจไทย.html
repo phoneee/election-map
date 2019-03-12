@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>พรรคไหนส่งผู้สมัครเขตไหนบ้าง?: รวมใจไทย (51 เขต)</title>
+
+    <meta content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi"
+        name="viewport">
+    <meta charset="utf-8" />
+
+    <!-- for Google -->
+    <meta name="description" content="เช็คข้อมูลกันได้ที่นี่ เปรียบเทียบพรรคชนพรรค">
+    <meta name="keywords" content="การเมือง, เลือกตั้ง, ประชาธิปไตย, การเมืองไทย, election, politics, democracy, thai politics, visualization, infographic, interactive, data journalism">
+    <meta name="author" content="elect.in.th">
+
+    <!-- for Facebook -->
+    <meta property="fb:app_id" content="171048360504115">
+    <meta property="og:title" content="พรรคไหนส่งผู้สมัครเขตไหนบ้าง?: รวมใจไทย (51 เขต)">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://rapee.github.io/election-map/statics/party-share/รวมใจไทย.png">
+    <meta property="og:url" content="https://rapee.github.io/election-map/รวมใจไทย.html">
+    <meta property="og:description" content="เช็คข้อมูลกันได้ที่นี่ เปรียบเทียบพรรคชนพรรค">
+
+    <!-- for Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="พรรคไหนส่งผู้สมัครเขตไหนบ้าง?: รวมใจไทย (51 เขต)">
+    <meta name="twitter:description" content="เช็คข้อมูลกันได้ที่นี่ เปรียบเทียบพรรคชนพรรค">
+    <meta name="twitter:image" content="https://rapee.github.io/election-map/statics/party-share/รวมใจไทย.png">
+
+</head>
+<body>
+    <script>
+      function loadQueryString() {
+        const search = location.search.substring(1);
+        if (!search) return {};
+        return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+      }
+
+      function createQueryString(obj) {
+        const pairs = Object.keys(obj).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(obj[k])}`);
+        pairs.sort((a, b) => a.indexOf('party=') === 0 ? -1 : 0);
+        return pairs.join('&');
+      }
+
+      setTimeout(function() {
+        const qs = loadQueryString();
+        const matches = /^\/([^.]+).html/gi.exec(location.pathname);
+        if (matches[1]) qs.party = decodeURIComponent(matches[1]);
+        location.href = 'https://rapee.github.io/election-map' + '?' + createQueryString(qs);
+      }, 500);
+    </script>
+</body>
+</html>
