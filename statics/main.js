@@ -121,7 +121,7 @@ function getFeatureId(feature) {
  * @return {Array<String>} List of feature ID belongs to the party
  */
 async function hilightByParty(partyName) {
-  const candidates = await fetchAsync(`./data/parties/${partyName}.json`);
+  const candidates = await fetchAsync(`${hostname}/data/parties/${partyName}.json`);
   let partyInfo = partyList.filter(p => p.name === partyName);
   if (partyInfo.length > 0) partyInfo = partyInfo[0];
   if (candidates && candidates.length > 0) {
@@ -611,7 +611,7 @@ async function setupParty() {
   let options = [
     '<option disabled selected value="">เลือกพรรค</option>'
   ];
-  const partyResult = await fetchAsync(`./data/party.json`);
+  const partyResult = await fetchAsync(`${hostname}/data/party.json`);
   partyList = partyResult || [];
   partyList.forEach(p => {
     options.push(`<option class="op" value="${p.name}">${p.name} (${p.count} เขต)</option>`);
@@ -704,7 +704,7 @@ async function setupParty() {
   });
 
   // load zone-party mapping data
-  zone2Parties = await fetchAsync(`./data/zone-to-parties.json`);
+  zone2Parties = await fetchAsync(`${hostname}/data/zone-to-parties.json`);
 }
 
 function resumeState() {
