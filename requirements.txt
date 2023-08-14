@@ -58,7 +58,7 @@ terminado==0.8.1
 testpath==0.4.2
 textract==1.6.1
 tika==1.19
-tornado==6.3.2
+tornado==6.3.3
 traitlets==4.3.2
 urllib3==1.24.1
 wcwidth==0.1.7
